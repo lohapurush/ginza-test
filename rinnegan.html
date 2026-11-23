@@ -2671,6 +2671,187 @@ body.nav-dock #content:has(.gantt-wrap){padding-bottom:8px !important}
 #nav-tt[data-side="bottom"]::after{top:-4px;left:calc(var(--ar,50%) - 4.5px)}
 #nav-tt[data-side="right"]::after{left:-4px;top:calc(var(--ar,50%) - 4.5px)}
 #nav-tt[data-side="left"]::after{right:-4px;top:calc(var(--ar,50%) - 4.5px)}
+
+/* ── Skill Mark Log ── Freelancer panel = the theme accent; everything marked elsewhere = quiet neutral */
+.sml-hero{padding:0;margin-bottom:12px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);position:relative;overflow:hidden}
+.sml-herobody{display:contents}
+.sml-hl{padding:20px 24px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.sml-hr{padding:20px 24px 14px;border-left:1px solid var(--card-b);background:var(--surf);min-width:0;display:flex;flex-direction:column}
+.sml-total{display:flex;align-items:flex-end;gap:14px}
+.sml-big{font-family:'Instrument Serif',Georgia,serif;font-size:64px;line-height:.82;letter-spacing:-.02em;color:var(--t1);font-variant-numeric:tabular-nums}
+.sml-bigl{font-size:13px;line-height:1.35;color:var(--t2);padding-bottom:2px}
+.sml-split{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--surf);border:1px solid var(--card-b)}
+.sml-split .f{background:var(--a);transition:width .35s ease}
+.sml-split .o{background:var(--t3);opacity:.45;transition:width .35s ease}
+.sml-legs{display:flex;flex-wrap:wrap;gap:8px}
+.sml-leg{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border-radius:var(--r-md);border:1px solid var(--card-b);background:var(--card);color:var(--t1);font:inherit;font-size:12.5px;cursor:pointer}
+.sml-leg i{width:10px;height:10px;border-radius:3px;background:var(--t3);opacity:.5}
+.sml-leg.fl i{background:var(--a);opacity:1}
+.sml-leg b{font-variant-numeric:tabular-nums}
+.sml-leg em{font-style:normal;color:var(--t3);font-size:11.5px;font-variant-numeric:tabular-nums}
+.sml-leg:hover{background:var(--surf)}
+.sml-leg.on{border-color:var(--a);box-shadow:inset 0 0 0 1px var(--a)}
+.sml-facts{display:flex;gap:22px;font-size:12.5px;color:var(--t2)}
+.sml-facts b{font-size:15px;color:var(--t1);margin-right:4px;font-variant-numeric:tabular-nums}
+.sml-cap{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--t2);margin-bottom:10px;min-height:22px}
+.sml-clear{font:inherit;font-size:11.5px;font-weight:600;color:var(--acc-t);background:var(--acc-h);border:1px solid var(--acc-b);border-radius:99px;padding:2px 10px;cursor:pointer}
+.sml-chart{display:flex;align-items:flex-end;gap:5px;flex:1}
+.sml-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;gap:5px;padding:4px 2px 2px;border:0;border-radius:var(--r-md);background:transparent;cursor:pointer;font:inherit}
+.sml-col:hover,.sml-col.on{background:var(--card)}
+.sml-col.on{box-shadow:inset 0 0 0 1px var(--a)}
+.sml-stack{height:76px;display:flex;flex-direction:column;justify-content:flex-end;gap:1px}
+.sml-stack span{display:block;border-radius:3px}
+.sml-stack .f{background:var(--a)}
+.sml-stack .o{background:var(--t3);opacity:.45}
+.sml-stack .z{height:2px;background:var(--card-b)}
+.sml-col em{font-style:normal;font-size:10.5px;color:var(--t3);text-align:center;font-variant-numeric:tabular-nums}
+.sml-tools{position:absolute;top:12px;right:16px;display:flex;align-items:center;gap:6px}
+.sml-tb{font:inherit;font-size:11.5px;font-weight:600;color:var(--t1);background:var(--card);border:1px solid var(--card-b);border-radius:var(--r-md);padding:4px 10px;cursor:pointer}
+.sml-tb:hover{background:var(--surf)}
+.sml-upd{font-size:11px;color:var(--t3);margin-left:4px}
+.sml-hr .sml-cap{padding-right:0;margin-top:30px}
+.sml-bar{padding:10px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.sml-search{display:flex;align-items:center;gap:8px;flex:1 1 260px;min-width:220px;padding:0 12px;border:1px solid var(--card-b);border-radius:var(--r-md);background:var(--inp);color:var(--t3)}
+.sml-search:focus-within{border-color:var(--a)}
+.sml-search input{flex:1;border:0;outline:0;background:transparent;color:var(--t1);font:inherit;font-size:12.5px;padding:8px 0}
+.sml-segs{display:flex;flex-wrap:wrap;gap:10px}
+.sml-group{display:inline-flex;border:1px solid var(--card-b);border-radius:var(--r-md);overflow:hidden;background:var(--card)}
+.sml-seg{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12px;font-weight:600;color:var(--t2);background:transparent;border:0;border-right:1px solid var(--card-b);padding:7px 12px;cursor:pointer;white-space:nowrap}
+.sml-seg:last-child{border-right:0}
+.sml-seg:hover{background:var(--surf)}
+.sml-seg.on{background:var(--acc-h);color:var(--acc-t)}
+.sml-seg i{width:8px;height:8px;border-radius:3px;background:var(--t3);opacity:.5}
+.sml-seg.fl i{background:var(--a);opacity:1}
+.sml-seg em{font-style:normal;font-weight:500;font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
+.sml-by{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t3);margin-left:auto}
+.sml-by select{font:inherit;font-size:12px;color:var(--t1);background:var(--inp);border:1px solid var(--card-b);border-radius:var(--r-md);padding:6px 8px;max-width:210px}
+.sml-seg:focus-visible,.sml-leg:focus-visible,.sml-col:focus-visible,.sml-tb:focus-visible,.sml-clear:focus-visible,.sml-by select:focus-visible{outline:2px solid var(--a);outline-offset:1px}
+.sml-list{padding:4px 10px 10px}
+.sml-day{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:16px 4px 6px;padding-bottom:6px;border-bottom:1px solid var(--card-b)}
+.sml-day:first-child{margin-top:10px}
+.sml-day b{font-size:13px;color:var(--t1)}
+.sml-day span{font-size:11.5px;color:var(--t3)}
+.sml-row{display:grid;grid-template-columns:36px minmax(0,1fr) 118px 190px 150px;gap:14px;align-items:center;padding:9px 12px 9px 16px;border-radius:var(--r-md);position:relative}
+.sml-row::before{content:"";position:absolute;left:3px;top:9px;bottom:9px;width:3px;border-radius:3px;background:var(--t3);opacity:.4}
+.sml-row.fl::before{background:var(--a);opacity:1}
+.sml-row:hover{background:var(--surf)}
+.sml-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--surf);border:1px solid var(--card-b);color:var(--t2)}
+.sml-row.fl .sml-av{background:var(--acc-h);border-color:var(--acc-b);color:var(--acc-t)}
+.sml-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sml-main b{font-size:13.5px;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sml-main span{font-size:12.5px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sml-meter{display:inline-flex;align-items:center;gap:8px}
+.sml-meter b{font-size:12.5px;min-width:14px;color:var(--t1);font-variant-numeric:tabular-nums}
+.sml-ticks{display:inline-flex;gap:2px}
+.sml-ticks i{width:4px;height:14px;border-radius:2px;background:var(--card-b)}
+.sml-meter.hi .sml-ticks i.on{background:var(--pill-pos-fg)}
+.sml-meter.mid .sml-ticks i.on{background:var(--pill-warn-fg)}
+.sml-meter.lo .sml-ticks i.on{background:var(--pill-bad-fg)}
+.sml-none{font-size:11.5px;color:var(--t3)}
+.sml-bd{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sml-badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.sml-badge.fl{background:var(--acc-h);border:1px solid var(--acc-b);color:var(--acc-t)}
+.sml-badge.ot{background:transparent;border:1px solid var(--card-b);color:var(--t2);font-weight:600}
+.sml-off{font-size:11px;font-weight:700;color:var(--pill-warn-fg);background:var(--pill-warn-bg);border:1px solid var(--pill-warn-bd);border-radius:99px;padding:2px 8px}
+.sml-who{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:right}
+.sml-who span{font-size:12.5px;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sml-who i{font-style:normal;font-size:11.5px;color:var(--t3);font-variant-numeric:tabular-nums}
+.sml-row.off .sml-main b,.sml-row.off .sml-main span{text-decoration:line-through;text-decoration-color:var(--t3)}
+.sml-row.off .sml-av,.sml-row.off .sml-main,.sml-row.off .sml-gr{opacity:.55}
+.sml-empty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:40px 20px;text-align:center}
+.sml-empty b{font-size:14px;color:var(--t1)}.sml-empty span{font-size:12.5px;color:var(--t3)}
+.sml-more{padding:14px;text-align:center;font-size:12px;color:var(--t3)}
+@media(prefers-reduced-motion:reduce){.sml-split .f,.sml-split .o{transition:none}}
+@media(max-width:1000px){
+  .sml-hero{grid-template-columns:1fr}
+  .sml-hr{border-left:0;border-top:1px solid var(--card-b)}
+  .sml-tools{position:static;padding:10px 24px 14px;border-top:1px solid var(--card-b)}
+  .sml-hr .sml-cap{margin-top:0}
+}
+@media(max-width:760px){
+  .sml-big{font-size:52px}
+  .sml-row{grid-template-columns:36px minmax(0,1fr) auto;row-gap:6px}
+  .sml-gr{grid-column:2}.sml-bd{grid-column:2}.sml-who{grid-column:3;grid-row:1;text-align:right}
+  .sml-by{margin-left:0}
+}
+
+/* ── Feedback Risk ── bands use the theme's own positive / warning / negative colours, so they follow every theme */
+.br-score{width:78px;border-radius:var(--r-md);border:1px solid var(--card-b);background:var(--surf);color:var(--t2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;line-height:1.1}
+.br-score b{font-size:20px;font-variant-numeric:tabular-nums}
+.br-score em{font-style:normal;font-size:11px;font-weight:600;margin-top:2px}
+.br-score.sm{width:44px;padding:5px 2px}.br-score.sm b{font-size:15px}
+.br-score.ok{background:var(--pill-pos-bg);border-color:var(--pill-pos-bd);color:var(--pill-pos-fg)}
+.br-score.warn{background:var(--pill-warn-bg);border-color:var(--pill-warn-bd);color:var(--pill-warn-fg)}
+.br-score.bad{background:var(--pill-bad-bg);border-color:var(--pill-bad-bd);color:var(--pill-bad-fg)}
+.br-split span{display:block;height:100%;transition:width .35s ease}
+.br-split .ok{background:var(--pill-pos-fg)}.br-split .warn{background:var(--pill-warn-fg)}.br-split .bad{background:var(--pill-bad-fg)}.br-split .na{background:var(--t3);opacity:.45}
+.br-leg.ok i{background:var(--pill-pos-fg);opacity:1}.br-leg.warn i{background:var(--pill-warn-fg);opacity:1}.br-leg.bad i{background:var(--pill-bad-fg);opacity:1}
+.br-calm{font-size:12.5px;color:var(--pill-pos-fg)}
+.br-looks{display:flex;flex-direction:column;gap:8px}
+.br-look{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--t1);background:var(--card);border:1px solid var(--card-b);border-radius:var(--r-md);padding:8px 12px;cursor:pointer}
+.br-look:hover{background:var(--card-b)}
+.br-look .br-main{flex:1}
+.br-item{border-top:1px solid var(--card-b)}
+.br-item:first-child,.sml-day+.br-item{border-top:0}
+.br-row{display:grid;grid-template-columns:78px minmax(0,1.3fr) 150px 112px minmax(0,1.6fr) 18px;gap:16px;align-items:center;width:100%;text-align:left;font:inherit;color:var(--t1);background:transparent;border:0;border-radius:var(--r-md);padding:12px 12px;cursor:pointer}
+.br-row:hover{background:var(--surf)}
+.br-row:focus-visible,.br-look:focus-visible,.br-tab:focus-visible{outline:2px solid var(--a);outline-offset:1px}
+.br-main{display:flex;flex-direction:column;gap:3px;min-width:0}
+.br-main b{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br-main span{font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br-trend{display:flex;flex-direction:column;gap:2px}
+.br-spark polyline{fill:none;stroke:var(--t3);stroke-width:1.5;stroke-linejoin:round;opacity:.7}
+.br-dot{fill:var(--t3)}.br-dot.ok{fill:var(--pill-pos-fg)}.br-dot.warn{fill:var(--pill-warn-fg)}.br-dot.bad{fill:var(--pill-bad-fg)}
+.br-tt{font-size:11.5px;color:var(--t2)}.br-tt.up{color:var(--pill-warn-fg);font-weight:700}.br-tt.dn{color:var(--pill-pos-fg);font-weight:700}
+.br-tt i{font-style:normal;font-variant-numeric:tabular-nums}
+.br-conf{font-size:11.5px;color:var(--t3)}.br-conf.low{font-style:italic}
+.br-top{font-size:12.5px;color:var(--t2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+.br-top i{color:var(--t3)}
+.br-chev{color:var(--t3);transition:transform .2s ease}
+.br-item.open .br-chev{transform:rotate(180deg)}
+.br-item.open{background:var(--surf);border-radius:var(--r-md)}
+.br-detail{padding:2px 20px 18px 108px}
+.br-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.br-tab{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12px;font-weight:600;color:var(--t2);background:var(--card);border:1px solid var(--card-b);border-radius:99px;padding:4px 11px;cursor:pointer}
+.br-tab.on{border-color:var(--a);box-shadow:inset 0 0 0 1px var(--a);color:var(--t1)}
+.br-tab i{width:8px;height:8px;border-radius:50%;background:var(--t3)}
+.br-tab i.ok{background:var(--pill-pos-fg)}.br-tab i.warn{background:var(--pill-warn-fg)}.br-tab i.bad{background:var(--pill-bad-fg)}
+.br-tab em{font-style:normal;font-weight:500;color:var(--t3);font-variant-numeric:tabular-nums}
+.br-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.br-sec h4{margin:0 0 6px;font-size:13px;color:var(--t1)}
+.br-sec.warn h4{color:var(--pill-warn-fg)}.br-sec.ok h4{color:var(--pill-pos-fg)}
+.br-sec ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.br-sec li{font-size:12.5px;line-height:1.45;color:var(--t2)}
+.br-sec li b{color:var(--t1)}
+.br-pill{display:inline-block;font-size:10.5px;font-weight:600;color:var(--t2);background:var(--card);border:1px solid var(--card-b);border-radius:99px;padding:0 7px}
+.br-foot{margin-top:14px;font-size:12px;color:var(--t3)}
+.br-load{padding:28px 24px;display:flex;flex-direction:column;gap:8px;max-width:520px}
+.br-load b{font-size:14px;color:var(--t1)}.br-load span{font-size:12.5px;color:var(--t2)}
+.br-track{height:8px;border-radius:99px;background:var(--surf);border:1px solid var(--card-b);overflow:hidden}
+.br-track div{height:100%;background:var(--a);transition:width .25s ease}
+@media(prefers-reduced-motion:reduce){.br-split span,.br-track div,.br-chev{transition:none}}
+@media(max-width:1100px){
+  .br-row{grid-template-columns:78px minmax(0,1fr) 150px 18px}
+  .br-conf{display:none}.br-top{grid-column:2 / 4;grid-row:2}
+  .br-detail{padding-left:20px}
+}
+@media(max-width:760px){
+  .br-row{grid-template-columns:70px minmax(0,1fr) 18px}
+  .br-trend{grid-column:2;grid-row:2;flex-direction:row;align-items:center;gap:10px}
+  .br-top{grid-column:2 / 4;grid-row:3}
+  .br-grid{grid-template-columns:1fr}
+}
+.br-hint{font-size:12px;color:var(--t3);line-height:1.45;margin-top:2px}
+.br-atms{padding:14px 18px 16px;margin-bottom:12px}
+.br-atms .sml-cap{margin-bottom:10px}
+.br-atmrow{display:flex;flex-wrap:wrap;gap:8px}
+.br-atm{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:150px;text-align:left;font:inherit;color:var(--t1);background:var(--card);border:1px solid var(--card-b);border-radius:var(--r-md);padding:8px 12px;cursor:pointer}
+.br-atm:hover:not(:disabled){background:var(--surf);border-color:var(--a)}
+.br-atm:disabled{cursor:default;opacity:.7}
+.br-atm:focus-visible{outline:2px solid var(--a);outline-offset:1px}
+.br-atm b{font-size:13px}
+.br-atm span{font-size:12px;font-weight:700}.br-atm span.warn{color:var(--pill-warn-fg)}.br-atm span.ok{color:var(--pill-pos-fg)}
+.br-atm em{font-style:normal;font-size:11.5px;color:var(--t3)}
 </style>
 </head>
 <body>
@@ -5113,6 +5294,8 @@ const PAGES=[
   {id:'flassignments',ic:'✈',lbl:'Freelancer engagements'},
   {id:'directory',ic:'▤',lbl:'Kitedex'},
 {id:'newjoiners',ic:'✚',lbl:'New Joiners'},
+  {id:'skilllog',ic:'✔',lbl:'Skill Mark Log'},
+  {id:'batchrisk',ic:'⚑',lbl:'Feedback Risk'},
   {id:'polls',ic:'☑',lbl:'Polls & KGT'}
 ];
 
@@ -11214,6 +11397,649 @@ function rNewJoiners(){
   return '<div class="pa">' + _njPanelHtml() + '</div>';
 }
 
+// ── Skill Mark Log (apikey 507) ─────────────────────────────────────────────────────────────────────────────────────
+// Every skill mark recorded for a trainer, newest first, with WHERE it was marked. The feed has no explicit "source" field, so the
+// source is read from two signals that agree in the data: Type = "marked from Freelancer Engagement panel - ATM Command Centre"
+// and Remark starting "from API FL". Either one counts as the Freelancer Engagement panel; anything else is "marked elsewhere"
+// (Hub, Explorer, the RMS itself, a trainer marking their own skill, ...). IsActive=false rows are marks that were later superseded
+// or withdrawn: they stay in the log (it is a history) but are dimmed, struck through and can be filtered out.
+var SML_TTL_MS = 5 * 60 * 1000, SML_ROW_CAP = 400, SML_CHART_DAYS = 14;
+var _SML_FL_TYPE = /freelancer engagement panel/i, _SML_FL_REMARK = /^from api fl\b/i;
+window._SML = null; window._smlLoading = false; window._smlError = null; window._smlTriedAt = 0;
+window._smlSrc = 'all'; window._smlRange = '30d'; window._smlStatus = 'active'; window._smlBy = 'all'; window._smlQ = ''; window._smlOnly = ''; window._smlShown = [];
+function _smlClean(x){ return String(x == null ? '' : x).replace(/\s+/g, ' ').trim(); }
+function _smlDate(v){                                          // "2026-11-17T12:32:06.95": a local wall-clock time, no zone
+  var m = String(v || '').match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?/);
+  return m ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0)) : null;
+}
+function _smlNice(n){                                          // "DEEPTI SHASTRI" -> "Deepti Shastri"; mixed case is left alone
+  n = _smlClean(n); if(!n) return '(unknown)';
+  return (n === n.toUpperCase()) ? n.toLowerCase().replace(/(^|\s)([a-z])/g, function(_, a, b){ return a + b.toUpperCase(); }) : n;
+}
+function _smlNorm(r){
+  var d = _smlDate(r && r.Addedon); if(!d) return null;
+  var type = _smlClean(r.Type), rem = _smlClean(r.Remark), g = parseFloat(r.Grade);
+  var em = (rem.match(/added by\s+([^\s@]+@[^\s]+)/i) || [])[1] || '';
+  var trainer = _smlClean(typeof _collapseDoubledName === 'function' ? _collapseDoubledName(r.trainername) : r.trainername);
+  return {
+    trainer: trainer || '(unnamed)', course: _smlClean(r.cname) || '(no course)', grade: isNaN(g) ? null : g, at: d,
+    active: r.IsActive !== false, by: _smlNice(r.PerfomedBY), byEmail: em.toLowerCase(), remark: rem, type: type,
+    src: (_SML_FL_TYPE.test(type) || _SML_FL_REMARK.test(rem)) ? 'fl' : 'other'
+  };
+}
+function _smlByKey(c){ return c.byEmail || c.by.toLowerCase(); }
+function _smlRedraw(){ try { if(typeof page !== 'undefined' && page === 'skilllog') rPage(); } catch(e){} }
+async function fetchSkillMarkLog(force){
+  if(window._smlLoading) return;
+  if(!force){
+    if(window._SML && (Date.now() - window._SML.at) < SML_TTL_MS) return;
+    if(Date.now() - window._smlTriedAt < 60000) return;          // after a failure, wait a minute before asking again
+  }
+  window._smlTriedAt = Date.now(); window._smlLoading = true; window._smlError = null;
+  var ctl = (typeof AbortController === 'function') ? new AbortController() : null, tm = ctl ? setTimeout(function(){ ctl.abort(); }, 45000) : null;
+  try {
+    var url = 'https://api.koenig-solutions.com/api/Kites/Operator/common'
+      + '?apikey=' + encodeURIComponent(_apiKey('skillMarkLog', '507')) + '&' + _authQS();
+    var resp = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body:'{}', credentials:'omit', signal: ctl ? ctl.signal : undefined });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    var j = await resp.json();
+    if(j.statuscode !== 200) throw new Error(j.message || ('API error ' + j.statuscode));
+    var rows = (typeof j.content === 'string') ? JSON.parse(j.content) : j.content;
+    if(!Array.isArray(rows)) rows = [];
+    var out = [];
+    rows.forEach(function(r){ var c = _smlNorm(r); if(c) out.push(c); });
+    out.sort(function(a, b){ return b.at - a.at; });
+    window._SML = { rows: out, at: Date.now() };
+  } catch(e){
+    window._smlError = (e && e.name === 'AbortError') ? 'the request timed out' : ((e && e.message) || String(e));
+  } finally {
+    if(tm) clearTimeout(tm);
+    window._smlLoading = false; _smlRedraw();
+  }
+}
+function _smlDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function _smlKey(d){ var p = function(n){ return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+function _smlRangeFrom(){
+  var days = { today:0, '7d':6, '30d':29 }[window._smlRange]; if(days == null) return null;
+  var t = _smlDay(new Date()); t.setDate(t.getDate() - days); return t;
+}
+// The filters. `skip` is a space-separated list of filters to leave out ("src range day"), so a chip or the chart can show what it WOULD give.
+function _smlFiltered(skip){
+  if(!window._SML) return [];
+  skip = ' ' + (skip || '') + ' ';
+  var has = function(k){ return skip.indexOf(' ' + k + ' ') >= 0; };
+  var from = has('range') ? null : _smlRangeFrom(), toks = _smlClean(window._smlQ).toLowerCase().split(' ').filter(Boolean);
+  return window._SML.rows.filter(function(c){
+    if(!has('src') && window._smlSrc !== 'all' && c.src !== window._smlSrc) return false;
+    if(from && c.at < from) return false;
+    if(!has('day') && window._smlOnly && _smlKey(c.at) !== window._smlOnly) return false;
+    if(!has('status') && window._smlStatus === 'active' && !c.active) return false;
+    if(!has('status') && window._smlStatus === 'inactive' && c.active) return false;
+    if(window._smlBy !== 'all' && _smlByKey(c) !== window._smlBy) return false;
+    if(toks.length){ var hay = (c.trainer + ' ' + c.course + ' ' + c.by + ' ' + c.byEmail).toLowerCase(); for(var i = 0; i < toks.length; i++) if(hay.indexOf(toks[i]) < 0) return false; }
+    return true;
+  });
+}
+function _smlDayLabel(d, now){
+  var diff = Math.round((_smlDay(now) - _smlDay(d)) / 86400000);
+  if(diff === 0) return 'Today'; if(diff === 1) return 'Yesterday';
+  return d.getDate() + ' ' + _NOIH_MON[d.getMonth()] + ' ' + d.getFullYear();
+}
+function _smlAgo(d, now){
+  var m = Math.round((now - d) / 60000);
+  if(m < 1) return 'just now'; if(m < 60) return m + ' min ago';
+  var h = Math.floor(m / 60); return h < 24 ? h + ' h ago' : '';
+}
+function _smlInitials(n){ var p = String(n).split(' ').filter(Boolean); return ((p[0] || '?')[0] + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase(); }
+function _smlMeter(g){
+  if(g == null) return '<span class="sml-none">No grade</span>';
+  var tier = g >= 8 ? 'hi' : g >= 5 ? 'mid' : 'lo', t = '';
+  for(var i = 1; i <= 10; i++) t += '<i' + (i <= g ? ' class="on"' : '') + '></i>';
+  return '<span class="sml-meter ' + tier + '" title="Grade ' + g + ' of 10"><span class="sml-ticks" aria-hidden="true">' + t + '</span><b>' + _esc(String(g)) + '</b></span>';
+}
+function _smlRowHtml(c, now){
+  var today = _smlDay(c.at).getTime() === _smlDay(now).getTime(), ago = today ? _smlAgo(c.at, now) : '';
+  var badge = c.src === 'fl'
+    ? '<span class="sml-badge fl" title="' + _esc(c.type || 'Marked from the Freelancer Engagement panel') + '">\u2708 Freelancer panel</span>'
+    : '<span class="sml-badge ot" title="Marked outside the Freelancer Engagement panel">Marked elsewhere</span>';
+  return '<div class="sml-row ' + c.src + (c.active ? '' : ' off') + '">'
+    + '<span class="sml-av" aria-hidden="true">' + _esc(_smlInitials(c.trainer)) + '</span>'
+    + '<div class="sml-main"><b title="' + _esc(c.trainer) + '">' + _esc(c.trainer) + '</b><span title="' + _esc(c.course) + '">' + _esc(c.course) + '</span></div>'
+    + '<div class="sml-gr">' + _smlMeter(c.grade) + '</div>'
+    + '<div class="sml-bd">' + badge + (c.active ? '' : '<span class="sml-off" title="Superseded or withdrawn">Inactive</span>') + '</div>'
+    + '<div class="sml-who"><span title="' + _esc(c.byEmail || c.by) + '">' + _esc(c.by) + '</span><i>' + _esc(_evcTime(c.at)) + (ago ? ', ' + ago : '') + '</i></div></div>';
+}
+function _smlBodyHtml(){
+  var now = new Date(), all = _smlFiltered(), shown = all.slice(0, SML_ROW_CAP); window._smlShown = all;
+  if(!all.length) return '<div class="sml-empty"><b>No skill marks match</b><span>Try a wider date range, or clear the filters.</span><button type="button" class="cx-link" onclick="smlReset()">Clear filters</button></div>';
+  var html = '', cur = null, counts = {};
+  all.forEach(function(c){ var g = _smlDayLabel(c.at, now); counts[g] = (counts[g] || 0) + 1; });
+  shown.forEach(function(c){
+    var g = _smlDayLabel(c.at, now);
+    if(g !== cur){ cur = g; html += '<div class="sml-day"><b>' + g + '</b><span>' + counts[g] + (counts[g] === 1 ? ' mark' : ' marks') + '</span></div>'; }
+    html += _smlRowHtml(c, now);
+  });
+  if(all.length > shown.length) html += '<div class="sml-more">Showing the newest ' + shown.length + ' of ' + all.length + '. Narrow the filters, or export the CSV for the full list.</div>';
+  return html;
+}
+// ── The header: the total, how it splits by source, and the last two weeks day by day ──
+function _smlScopeText(){
+  if(window._smlOnly){ var p = window._smlOnly.split('-'); return 'on ' + (+p[2]) + ' ' + _NOIH_MON[+p[1] - 1]; }
+  return { today:'today', '7d':'in the last 7 days', '30d':'in the last 30 days', all:'in the log' }[window._smlRange] || '';
+}
+function _smlChartHtml(){
+  var now = new Date(), days = [], i, base = _smlFiltered('src range day'), map = {};
+  base.forEach(function(c){ var k = _smlKey(c.at); (map[k] = map[k] || { fl:0, ot:0 })[c.src === 'fl' ? 'fl' : 'ot']++; });
+  for(i = SML_CHART_DAYS - 1; i >= 0; i--){ var d = _smlDay(now); d.setDate(d.getDate() - i); var k = _smlKey(d), v = map[k] || { fl:0, ot:0 }; days.push({ d:d, k:k, fl:v.fl, ot:v.ot }); }
+  var max = Math.max.apply(null, days.map(function(x){ return x.fl + x.ot; }).concat([1])), H = 76;
+  var px = function(n){ return n ? Math.max(3, Math.round(n / max * H)) : 0; };
+  return '<div class="sml-chart" role="group" aria-label="Skill marks per day, last ' + SML_CHART_DAYS + ' days. Choose a day to filter the list.">'
+    + days.map(function(x){
+      var tot = x.fl + x.ot, on = window._smlOnly === x.k;
+      var tip = x.d.getDate() + ' ' + _NOIH_MON[x.d.getMonth()] + ': ' + tot + (tot === 1 ? ' mark' : ' marks') + (tot ? ' (' + x.fl + ' Freelancer panel, ' + x.ot + ' elsewhere)' : '');
+      return '<button type="button" class="sml-col' + (on ? ' on' : '') + '" aria-pressed="' + on + '" title="' + _esc(tip) + '" aria-label="' + _esc(tip) + '" onclick="smlDay(\'' + x.k + '\')">'
+        + '<span class="sml-stack">' + (x.ot ? '<span class="o" style="height:' + px(x.ot) + 'px"></span>' : '') + (x.fl ? '<span class="f" style="height:' + px(x.fl) + 'px"></span>' : '') + (tot ? '' : '<span class="z"></span>') + '</span>'
+        + '<em>' + x.d.getDate() + '</em></button>';
+    }).join('') + '</div>';
+}
+function _smlHeroHtml(){
+  if(!window._SML) return '';
+  var f = _smlFiltered(), fl = 0, ot = 0, tr = {}, co = {};
+  f.forEach(function(c){ if(c.src === 'fl') fl++; else ot++; tr[c.trainer.toLowerCase()] = 1; co[c.course.toLowerCase()] = 1; });
+  var tot = f.length, pf = tot ? Math.round(fl / tot * 100) : 0, nt = Object.keys(tr).length, nc = Object.keys(co).length;
+  var leg = function(id, cls, label, n, p){
+    return '<button type="button" class="sml-leg ' + cls + (window._smlSrc === id ? ' on' : '') + '" aria-pressed="' + (window._smlSrc === id) + '" onclick="smlSet(\'Src\',\'' + (window._smlSrc === id ? 'all' : id) + '\')"><i></i><span>' + label + '</span><b>' + n + '</b><em>' + p + '%</em></button>';
+  };
+  return '<div class="sml-hl">'
+    + '<div class="sml-total"><span class="sml-big">' + tot + '</span><span class="sml-bigl">skill mark' + (tot === 1 ? '' : 's') + '<br>' + _smlScopeText() + '</span></div>'
+    + '<div class="sml-split" role="img" aria-label="' + fl + ' from the Freelancer panel, ' + ot + ' marked elsewhere"><span class="f" style="width:' + (tot ? (fl / tot * 100) : 0) + '%"></span><span class="o" style="width:' + (tot ? (ot / tot * 100) : 0) + '%"></span></div>'
+    + '<div class="sml-legs">' + leg('fl', 'fl', 'Freelancer panel', fl, pf) + leg('other', 'ot', 'Marked elsewhere', ot, tot ? 100 - pf : 0) + '</div>'
+    + '<div class="sml-facts"><span><b>' + nt + '</b> trainer' + (nt === 1 ? '' : 's') + '</span><span><b>' + nc + '</b> course' + (nc === 1 ? '' : 's') + '</span></div></div>'
+    + '<div class="sml-hr"><div class="sml-cap">Marks per day, last ' + SML_CHART_DAYS + ' days' + (window._smlOnly ? '<button type="button" class="sml-clear" onclick="smlDay(\'\')">Show all days</button>' : '') + '</div>' + _smlChartHtml() + '</div>';
+}
+function _smlSegsHtml(){
+  var n = function(skip, src){ return _smlFiltered(skip).filter(function(c){ return src === 'all' || c.src === src; }).length; };
+  var seg = function(kind, id, label, cnt, cls){
+    var on = window['_sml' + kind] === id;
+    return '<button type="button" class="sml-seg' + (on ? ' on' : '') + (cls ? ' ' + cls : '') + '" aria-pressed="' + on + '" onclick="smlSet(\'' + kind + '\',\'' + id + '\')">' + (cls ? '<i></i>' : '') + label + (cnt != null ? '<em>' + cnt + '</em>' : '') + '</button>';
+  };
+  var s = 'src day';
+  return '<div class="sml-group" role="group" aria-label="Marked from">' + seg('Src', 'all', 'All', n('src day', 'all')) + seg('Src', 'fl', 'Freelancer panel', n('src day', 'fl'), 'fl') + seg('Src', 'other', 'Elsewhere', n('src day', 'other'), 'ot') + '</div>'
+    + '<div class="sml-group" role="group" aria-label="Date range">' + seg('Range', 'today', 'Today') + seg('Range', '7d', '7 days') + seg('Range', '30d', '30 days') + seg('Range', 'all', 'All') + '</div>'
+    + '<div class="sml-group" role="group" aria-label="Status">' + seg('Status', 'active', 'Active') + seg('Status', 'inactive', 'Inactive') + seg('Status', 'all', 'Both') + '</div>';
+}
+function _smlRefreshLive(){
+  var h = document.getElementById('sml-hero'); if(h) h.innerHTML = _smlHeroHtml();
+  var g = document.getElementById('sml-segs'); if(g) g.innerHTML = _smlSegsHtml();
+  var b = document.getElementById('sml-body'); if(b) b.innerHTML = _smlBodyHtml();
+}
+function smlSetQ(v){ window._smlQ = v; _smlRefreshLive(); }
+function smlSet(kind, v){ window['_sml' + kind] = v; if(kind === 'Range') window._smlOnly = ''; _smlRefreshLive(); if(kind === 'By') rPage(); }
+function smlDay(k){ window._smlOnly = (window._smlOnly === k) ? '' : k; if(window._smlOnly) window._smlRange = 'all'; _smlRefreshLive(); }
+function smlReset(){ window._smlSrc = 'all'; window._smlRange = '30d'; window._smlStatus = 'active'; window._smlBy = 'all'; window._smlQ = ''; window._smlOnly = ''; rPage(); }
+function smlExport(){
+  var rows = window._smlShown || []; if(!rows.length){ showToast('Nothing to export.', 'info', 2500); return; }
+  var q = function(x){ x = String(x == null ? '' : x); if(/^[=+\-@\t\r]/.test(x)) x = "'" + x; return '"' + x.replace(/"/g, '""') + '"'; };
+  var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+  var lines = [['Trainer', 'Course', 'Grade', 'Marked from', 'Marked by', 'Marked at', 'Active', 'Remark'].map(q).join(',')];
+  rows.forEach(function(c){
+    lines.push([c.trainer, c.course, c.grade == null ? '' : c.grade, c.src === 'fl' ? 'Freelancer Engagement panel' : 'Elsewhere', c.by,
+      c.at.getFullYear() + '-' + pad(c.at.getMonth() + 1) + '-' + pad(c.at.getDate()) + ' ' + pad(c.at.getHours()) + ':' + pad(c.at.getMinutes()), c.active ? 'Yes' : 'No', c.remark].map(q).join(','));
+  });
+  try {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type:'text/csv;charset=utf-8' }));
+    a.download = 'skill-mark-log.csv'; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  } catch(e){ showToast('Could not export: ' + (e.message || e), 'error'); }
+}
+function _smlPanelHtml(){
+  if(!window._SML){
+    if(window._smlError) return stateError('Could not load the skill mark log', window._smlError, 'fetchSkillMarkLog(true)');
+    return stateLoading('Loading the skill mark log\u2026', 'Every skill mark, and where it was marked from.');
+  }
+  var by = {}, order = [];
+  window._SML.rows.forEach(function(c){ var k = _smlByKey(c); if(!by[k]){ by[k] = { name:c.by, n:0 }; order.push(k); } by[k].n++; });
+  order.sort(function(a, b){ return by[a].name.localeCompare(by[b].name); });
+  return '<div class="card sml-hero"><div id="sml-hero" class="sml-herobody">' + _smlHeroHtml() + '</div>'
+    + '<div class="sml-tools"><button type="button" class="sml-tb" onclick="fetchSkillMarkLog(true)" title="Fetch the latest marks">\u21bb Refresh</button><button type="button" class="sml-tb" onclick="smlExport()" title="Download the marks currently listed">\u2b07 Export CSV</button><span class="sml-upd">Updated ' + _evcTime(new Date(window._SML.at)) + '</span></div></div>'
+    + '<div class="card sml-bar"><label class="sml-search"><span aria-hidden="true">\u2315</span><input type="text" id="sml-q" placeholder="Search a trainer, course or who marked it" value="' + _esc(window._smlQ) + '" oninput="smlSetQ(this.value)" aria-label="Search the skill mark log"></label>'
+    + '<div id="sml-segs" class="sml-segs">' + _smlSegsHtml() + '</div>'
+    + '<label class="sml-by">Marked by <select onchange="smlSet(\'By\',this.value)"><option value="all">Everyone</option>'
+    + order.map(function(k){ return '<option value="' + _esc(k) + '"' + (window._smlBy === k ? ' selected' : '') + '>' + _esc(by[k].name) + ' (' + by[k].n + ')</option>'; }).join('') + '</select></label></div>'
+    + '<div class="card sml-list"><div id="sml-body">' + _smlBodyHtml() + '</div></div>';
+}
+function rSkillLog(){
+  setTimeout(function(){ try { fetchSkillMarkLog(false); } catch(e){} }, 40);
+  return '<div class="pa">' + _smlPanelHtml() + '</div>';
+}
+
+// ── Feedback Risk (apikey 506) ──────────────────────────────────────────────────────────────────────────────────────
+// Which running batches are likely to end with unhappy feedback. The risk itself is NOT computed here: the backend analyses each
+// session overnight (class chat, attendance, PIRs, feedback) and returns one row per session day with RiskScore, RiskBand, Confidence,
+// Trend, concerns, positives, a note for the trainer and any learners at risk. This panel finds the batches that are live (from the
+// schedule the dashboard already holds), asks 506 for each one, and shows the latest analysis plus how the score moved day by day.
+// The API takes a trainer email and an AssignmentId, so it is one call per batch, a few at a time, cached for an hour.
+var BR_TTL = 60 * 60 * 1000, BR_SCHED_TTL = 30 * 60 * 1000, BR_CONC = 5, BR_CONC_SCHED = 6, BR_ENDED_DAYS = 7, BR_LOOKBACK = 30;
+var _BR_RANK = { green:0, yellow:1, amber:1, orange:2, red:3 };
+var _BR_MON = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+window._BR = null; window._BR_CACHE = window._BR_CACHE || {}; window._BR_SCHED = window._BR_SCHED || {}; window._brScope = 'me'; window._brLoading = false; window._brError = null; window._brTriedAt = 0; window._brProg = null; window._brFailed = [];
+window._brEmailMode = 'enc'; window._brModeSure = false;       // the working curl sends the email as "name%40domain"; plain "@" is tried if that returns nothing
+window._brBand = 'all'; window._brWhen = 'running'; window._brQ = ''; window._brSort = 'risk'; window._brRising = false; window._brOpen = {}; window._brShown = [];
+function _brClean(x){ return String(x == null ? '' : x).replace(/\s+/g, ' ').trim(); }
+function _brDayOf(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function _brIso(d){ var p = function(n){ return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+function _brParse(v){
+  if(v instanceof Date) return isNaN(v) ? null : v;
+  var s = String(v == null ? '' : v).trim(), m; if(!s) return null;
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m) return new Date(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0));
+  m = s.match(/^(\d{1,2})[-\/ ]([A-Za-z]{3})[a-z]*[-\/ ,]*(\d{4})/);
+  if(m && _BR_MON[m[2].toLowerCase()] != null) return new Date(+m[3], _BR_MON[m[2].toLowerCase()], +m[1]);
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);                 // DD/MM/YYYY
+  if(m) return new Date(+m[3], +m[2] - 1, +m[1]);
+  var d = new Date(s); return isNaN(d) ? null : d;
+}
+function _brJson(s, fb){ if(s == null || s === '') return fb; if(typeof s !== 'string') return s; try { return JSON.parse(s); } catch(e){ return fb; } }
+function _brArr(x){ return Array.isArray(x) ? x : []; }
+function _brStrs(x){ return _brArr(x).map(function(v){ return _brClean(typeof v === 'string' ? v : (v && (v.what || v.text || v.name)) || ''); }).filter(Boolean); }
+function _brDayRow(r){
+  var date = _brParse(r && r.SessionDate); if(!date) return null;
+  var note = _brJson(r.TrainerNoteJson, null); if(!note || typeof note !== 'object') note = {};
+  var sc = parseFloat(r.RiskScore);
+  return {
+    date: date, dayNo: +r.DayNo || null, total: +r.TotalDays || null, final: !!r.IsFinalDay, learners: +r.Learners || 0,
+    score: isNaN(sc) ? null : sc, band: _brClean(r.RiskBand), conf: _brClean(r.Confidence).toLowerCase(), trend: _brClean(r.Trend).toLowerCase(),
+    concerns: _brStrs(_brJson(r.ConcernsJson, [])), positives: _brStrs(_brJson(r.PositivesJson, [])),
+    going: _brStrs(note.going_well), hard: _brStrs(note.learners_found_hard), open: _brStrs(note.open_issues), suggest: _brStrs(note.suggestions),
+    checkIn: _brArr(note.check_in_with).map(function(x){ return { name:_brClean(x && x.name), why:_brClean(x && x.why) }; }).filter(function(x){ return x.name; }),
+    actions: _brStrs(_brJson(r.TrainerActionsJson, [])),
+    atRisk: _brArr(_brJson(r.LearnersAtRiskJson, [])).map(function(x){ return { name:_brClean(x && x.StudentName), score:parseFloat(x && x.RiskScore), why:_brClean(x && x.Reasons), present:x && x.DaysPresent, sofar:x && x.DaysSoFar }; }).filter(function(x){ return x.name; }),
+    analysed: _brParse(r.AnalysedOn)
+  };
+}
+function _brRank(b){ var r = _BR_RANK[String(b || '').toLowerCase()]; return r == null ? -1 : r; }
+function _brCls(b){ var r = _brRank(b); return r === 0 ? 'ok' : r === 3 ? 'bad' : r > 0 ? 'warn' : 'na'; }
+function _brKey(c){ return c.id + '|' + c.email.toLowerCase(); }
+// The live batches, from the schedule the dashboard already loaded. null = the schedule has not loaded yet.
+
+function _brCandidatesMe(){
+  var live = window._WEEK_LIVE; if(!live || !Object.keys(live).length) return null;
+  var team = (typeof D !== 'undefined' && D && D.trainers) ? D.trainers : [], byName = {};
+  team.forEach(function(t){ if(t && t.name) byName[t.name] = t; });
+  var me = (typeof ME !== 'undefined' && ME) ? ME : {}, dm = { name: me.fullName || 'My team', email: String(me.email || '').toLowerCase() };
+  var today = _brDayOf(new Date()), floor = new Date(today); floor.setDate(floor.getDate() - BR_ENDED_DAYS);
+  var seen = {}, out = [], noEmail = 0;
+  Object.keys(live).forEach(function(name){
+    _brArr(live[name] && live[name].assignments).forEach(function(a){
+      var id = a && a.AssignmentId; if(!id) return;
+      if(a.StatusCode && a.StatusCode !== 'SC' && a.StatusCode !== 'DVT') return;
+      var s = _brParse(a.StartDate || a.StarDate), en = _brParse(a.EndDate) || s;
+      if(!s || s > today || en < floor) return;
+      var t = byName[name], em = t ? getTrainerEmailForAPI(t) : '';
+      if(!em || em.indexOf('@') < 1){ noEmail++; return; }
+      var k = id + '|' + em.toLowerCase(); if(seen[k]) return; seen[k] = 1;
+      out.push({ id:String(id), course:_brClean(a.CourseName || a.Course) || '(untitled course)', trainer:name, email:em, mode:_brClean(a.Mode), start:s, end:en, learners:+a.NoOfParticipants || 0, running: en >= today, dm: dm });
+    });
+  });
+  return { list: out, noEmail: noEmail, schedFailed: 0 };
+}
+// One trainer's live batches, read from their schedule (apikey 111, the same call the Gantt makes). Cached for 30 minutes.
+async function _brSchedule(email){
+  var key = email.toLowerCase(), hit = window._BR_SCHED[key];
+  if(hit && (Date.now() - hit.at) < BR_SCHED_TTL) return hit.list;
+  var ep = (typeof API_CONFIG !== 'undefined' && API_CONFIG.endpoints && API_CONFIG.endpoints.rcSchedule) || {}, ap = ep.authParams || {};
+  var today = _brDayOf(new Date()), from = new Date(today); from.setDate(from.getDate() - BR_ENDED_DAYS);
+  var url = (ep.url || 'https://api.koenig-solutions.com/api/Kites/Operator/common') + '?apikey=' + encodeURIComponent(ap.apikey || '111') + '&' + _authQS();
+  var ctl = (typeof AbortController === 'function') ? new AbortController() : null, tm = ctl ? setTimeout(function(){ ctl.abort(); }, 30000) : null, rows;
+  try {
+    var resp = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify({ traineremail: email, fromDate: _brIso(from), toDate: _brIso(today) }), credentials:'omit', signal: ctl ? ctl.signal : undefined });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    var j = await resp.json();
+    if(j.statuscode !== 200) throw new Error(j.message || ('API error ' + j.statuscode));
+    rows = _brArr((typeof j.content === 'string') ? _brJson(j.content, []) : j.content);
+  } finally { if(tm) clearTimeout(tm); }
+  var map = {};
+  rows.forEach(function(r){
+    if(!/^(SC|DVT)/i.test(String(r && r.AssociatedType || '')) || !r.AssignmentId) return;
+    var id = String(r.AssignmentId), g = map[id] || (map[id] = { id:id, course:_brClean(r.CourseName), mode:_brClean(r.DeliveryMode), cs:null, ce:null, lo:null, hi:null, learners:0 });
+    var d = _brParse(r.Date); if(d){ if(!g.lo || d < g.lo) g.lo = d; if(!g.hi || d > g.hi) g.hi = d; }
+    g.cs = g.cs || _brParse(r.CourseSDate); g.ce = g.ce || _brParse(r.CourseEDate);
+    g.learners = Math.max(g.learners, +r.NoOfStudent || +r.NoOfParticipants || 0);
+  });
+  var list = Object.keys(map).map(function(id){ var g = map[id]; return { id:id, course:g.course || '(untitled course)', mode:g.mode, start:g.cs || g.lo, end:g.ce || g.hi, learners:g.learners }; }).filter(function(a){ return a.start && a.end; });
+  window._BR_SCHED[key] = { at: Date.now(), list: list };
+  return list;
+}
+// Live batches for another ATM's team, or for every ATM: rosters (apikey 82, shared with the Mastery hub), then each trainer's schedule.
+async function _brCandidatesFor(scope){
+  var roster = await new Promise(function(res){
+    var done = false, t = setTimeout(function(){ if(!done){ done = true; res(null); } }, 60000);
+    try { _masteryFetchAllRosters(function(r){ if(!done){ done = true; clearTimeout(t); res(r); } }); } catch(e){ if(!done){ done = true; clearTimeout(t); res(null); } }
+  });
+  var all = (roster && roster.trainers) || (window._MASTERY_ROSTER && window._MASTERY_ROSTER.trainers) || [];
+  if(!all.length) throw new Error('Could not load the ATM rosters');
+  var seenP = {}, people = [], noEmail = 0;
+  all.forEach(function(t){
+    var em = String(t.email || '').trim(), dm = String(t.dmEmail || '').toLowerCase();
+    if(scope !== 'all' && dm !== scope) return;
+    if(em.indexOf('@') < 1){ noEmail++; return; }
+    var k = em.toLowerCase(); if(seenP[k]) return; seenP[k] = 1;
+    people.push({ name:t.name, email:em, dm:{ name:t.dmName || '', email:dm } });
+  });
+  window._brProg = { stage:'schedules', done:0, total:people.length }; _brTick();
+  var today = _brDayOf(new Date()), floor = new Date(today); floor.setDate(floor.getDate() - BR_ENDED_DAYS);
+  var out = [], schedFailed = 0, i = 0;
+  async function worker(){
+    while(i < people.length){
+      var p = people[i++];
+      try {
+        (await _brSchedule(p.email)).forEach(function(a){
+          if(a.start > today || a.end < floor) return;
+          out.push({ id:a.id, course:a.course, trainer:p.name, email:p.email, mode:a.mode, start:a.start, end:a.end, learners:a.learners, running: a.end >= today, dm:p.dm });
+        });
+      } catch(e){ schedFailed++; }
+      window._brProg.done++; _brTick();
+    }
+  }
+  var ws = []; for(var k = 0; k < Math.min(BR_CONC_SCHED, people.length); k++) ws.push(worker());
+  await Promise.all(ws);
+  var seen = {}, list = out.filter(function(c){ var key = c.id + '|' + c.email.toLowerCase(); if(seen[key]) return false; seen[key] = 1; return true; });
+  return { list: list, noEmail: noEmail, schedFailed: schedFailed };
+}
+async function _brPost(c, mode){
+  var today = _brDayOf(new Date()), from = new Date(Math.max(c.start.getTime(), today.getTime() - BR_LOOKBACK * 86400000));
+  var ctl = (typeof AbortController === 'function') ? new AbortController() : null, tm = ctl ? setTimeout(function(){ ctl.abort(); }, 30000) : null;
+  try {
+    var url = 'https://api.koenig-solutions.com/api/Kites/Operator/common?apikey=' + encodeURIComponent(_apiKey('batchRisk', '506')) + '&' + _authQS();
+    var body = { TrainerEmail: mode === 'enc' ? c.email.replace(/@/g, '%40') : c.email, TrainerId: '', AssignmentId: c.id, FromDate: _brIso(from), ToDate: _brIso(today) };
+    var resp = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(body), credentials:'omit', signal: ctl ? ctl.signal : undefined });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    var j = await resp.json();
+    if(j.statuscode !== 200) throw new Error(j.message || ('API error ' + j.statuscode));
+    var rows = (typeof j.content === 'string') ? _brJson(j.content, []) : j.content;
+    return _brArr(rows).filter(function(r){ return String(r && r.AssignmentId) === c.id; });
+  } finally { if(tm) clearTimeout(tm); }
+}
+async function _brCall(c){
+  var rows = await _brPost(c, window._brEmailMode);
+  if(!rows.length && !window._brModeSure){                         // empty on the first try: the other email form may be the one this key wants
+    var other = window._brEmailMode === 'enc' ? 'plain' : 'enc', alt = await _brPost(c, other);
+    if(alt.length){ window._brEmailMode = other; window._brModeSure = true; rows = alt; }
+  } else if(rows.length){ window._brModeSure = true; }
+  var days = []; rows.forEach(function(r){ var d = _brDayRow(r); if(d) days.push(d); });
+  days.sort(function(a, b){ return a.date - b.date; });
+  return days;
+}
+
+function _brTick(){
+  var p = window._brProg, el = document.getElementById('br-prog'); if(!p || !el) return;
+  el.textContent = p.stage === 'schedules' ? 'Reading schedules: ' + p.done + ' of ' + p.total + ' trainers' : 'Analysed ' + p.done + ' of ' + p.total + ' batches';
+  var b = document.getElementById('br-bar'); if(b) b.style.width = (p.total ? Math.round(p.done / p.total * 100) : 0) + '%';
+}
+function _brRedraw(){ try { if(typeof page !== 'undefined' && page === 'batchrisk') rPage(); } catch(e){} }
+
+async function fetchBatchRisk(force){
+  if(window._brLoading) return;
+  var scope = window._brScope, cand = null;
+  if(scope === 'me'){ cand = _brCandidatesMe(); if(!cand) return; }   // the schedule is not in yet; its own sync redraws this page when it lands
+  if(!force){
+    var fresh = window._BR && window._BR.scope === scope && (Date.now() - window._BR.at) < BR_TTL && (scope !== 'me' || window._BR.sig === cand.list.length);
+    if(fresh) return;
+    if(window._brError && Date.now() - window._brTriedAt < 60000) return;
+  }
+  window._brTriedAt = Date.now(); window._brLoading = true; window._brError = null; window._brFailed = [];
+  window._brProg = { stage:'schedules', done:0, total:0 };
+  var failed = [], schedFailed = 0;
+  try {
+    if(scope !== 'me'){ _brRedraw(); cand = await _brCandidatesFor(scope); schedFailed = cand.schedFailed; }
+    var todo = cand.list.filter(function(c){ var e = window._BR_CACHE[_brKey(c)]; return force || !e || (Date.now() - e.at) > BR_TTL; });
+    window._brProg = { stage:'analysis', done:0, total:todo.length }; var i = 0;
+    if(todo.length) _brRedraw();
+    var worker = async function(){
+      while(i < todo.length){
+        var c = todo[i++];
+        try { window._BR_CACHE[_brKey(c)] = { at:Date.now(), days: await _brCall(c) }; }
+        catch(e){ failed.push({ c:c, msg: (e && e.name === 'AbortError') ? 'timed out' : ((e && e.message) || String(e)) }); }
+        window._brProg.done++; _brTick();
+      }
+    };
+    var ws = []; for(var k = 0; k < Math.min(BR_CONC, todo.length); k++) ws.push(worker());
+    await Promise.all(ws);
+    var batches = [];
+    cand.list.forEach(function(c){
+      var e = window._BR_CACHE[_brKey(c)]; if(!e) return;
+      var d = e.days || [], latest = d[d.length - 1] || null, prev = d.length > 1 ? d[d.length - 2] : null;
+      batches.push({ c:c, days:d, latest:latest, prev:prev });
+    });
+    if(scope === window._brScope){                                   // the person may have picked another ATM meanwhile: then this result is dropped
+      window._brFailed = failed;
+      window._BR = { batches:batches, at:Date.now(), sig:cand.list.length, noEmail:cand.noEmail, schedFailed:schedFailed, scope:scope };
+      if(failed.length && !batches.length){ window._BR = null; window._brError = failed[0].msg; }
+    }
+  } catch(e){
+    if(scope === window._brScope) window._brError = (e && e.message) || String(e);
+  } finally {
+    window._brLoading = false; window._brProg = null;
+    if(scope !== window._brScope) setTimeout(function(){ try { fetchBatchRisk(false); } catch(e){} }, 0);
+    _brRedraw();
+  }
+}
+function _brDelta(b){ return (b.latest && b.prev && b.latest.score != null && b.prev.score != null) ? b.latest.score - b.prev.score : null; }
+function _brIsRising(b){ var d = _brDelta(b); return !!(b.latest && (b.latest.trend === 'rising' || (d != null && d > 0))); }
+function _brFiltered(skip){
+  if(!window._BR) return [];
+  skip = ' ' + (skip || '') + ' ';
+  var toks = _brClean(window._brQ).toLowerCase().split(' ').filter(Boolean);
+  var list = window._BR.batches.filter(function(b){
+    if(!b.latest) return false;                                    // not analysed yet: listed separately
+    if(window._brWhen === 'running' && !b.c.running) return false;
+    if(window._brWhen === 'ended' && b.c.running) return false;
+    if(skip.indexOf(' band ') < 0 && window._brBand !== 'all' && String(b.latest.band || 'No band').toLowerCase() !== window._brBand) return false;
+    if(window._brRising && !_brIsRising(b)) return false;
+    if(toks.length){ var hay = (b.c.course + ' ' + b.c.trainer + ' ' + b.c.id).toLowerCase(); for(var i = 0; i < toks.length; i++) if(hay.indexOf(toks[i]) < 0) return false; }
+    return true;
+  });
+  var s = window._brSort, nm = function(a, b){ return a.c.course.localeCompare(b.c.course); };
+  var sc = function(b){ return b.latest.score == null ? -1 : b.latest.score; };
+  list.sort(function(a, b){
+    var g = (window._brWhen === 'all') ? ((b.c.running ? 1 : 0) - (a.c.running ? 1 : 0)) : 0; if(g) return g;
+    if(s === 'rising') return ((_brDelta(b) == null ? -99 : _brDelta(b)) - (_brDelta(a) == null ? -99 : _brDelta(a))) || (sc(b) - sc(a)) || nm(a, b);
+    if(s === 'ending') return (a.c.end - b.c.end) || (sc(b) - sc(a));
+    if(s === 'name') return nm(a, b);
+    return (_brRank(b.latest.band) - _brRank(a.latest.band)) || (sc(b) - sc(a)) || nm(a, b);
+  });
+  return list;
+}
+var _BR_TREND = { rising:['\u2191', 'Rising', 'up'], falling:['\u2193', 'Falling', 'dn'], 'new':['', 'First day', ''], steady:['\u2192', 'Steady', ''], stable:['\u2192', 'Steady', ''], flat:['\u2192', 'Steady', ''] };
+function _brFmtDate(d){ return d ? d.getDate() + ' ' + _NOIH_MON[d.getMonth()] : ''; }
+function _brSpark(days){
+  var W = 84, H = 28, P = 4, vals = days.map(function(d){ return d.score; }).filter(function(v){ return v != null; });
+  if(!vals.length) return '';
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+  if(mx - mn < 20){ var mid = (mx + mn) / 2; mn = mid - 10; mx = mid + 10; }   // a flat run should look flat, not like a swing
+  var step = days.length > 1 ? (W - 2 * P) / (days.length - 1) : 0, pts = [], dots = '';
+  days.forEach(function(d, i){
+    if(d.score == null) return;
+    var x = days.length > 1 ? P + i * step : W / 2, y = H - P - (d.score - mn) / (mx - mn) * (H - 2 * P);
+    pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+    dots += '<circle class="br-dot ' + _brCls(d.band) + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (i === days.length - 1 ? 3.6 : 2.6) + '"></circle>';
+  });
+  var tip = days.map(function(d){ return _brFmtDate(d.date) + ': ' + (d.score == null ? 'no score' : d.score) + (d.band ? ' (' + d.band + ')' : ''); }).join('\n');
+  return '<svg class="br-spark" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Risk score by day"><title>' + _esc(tip) + '</title>'
+    + (pts.length > 1 ? '<polyline points="' + pts.join(' ') + '"></polyline>' : '') + dots + '</svg>';
+}
+function _brList(title, items, cls){
+  if(!items || !items.length) return '';
+  return '<div class="br-sec ' + (cls || '') + '"><h4>' + title + '</h4><ul>' + items.map(function(t){ return '<li>' + _esc(t) + '</li>'; }).join('') + '</ul></div>';
+}
+function _brDetailHtml(b, idx){
+  var d = b.days[idx] || b.latest, tabs = b.days.map(function(x, i){
+    return '<button type="button" class="br-tab' + (i === idx ? ' on' : '') + '" aria-pressed="' + (i === idx) + '" onclick="brDay(\'' + _esc(b.c.id) + '\',' + i + ')" title="' + _esc(_brFmtDate(x.date) + (x.band ? ', ' + x.band : '')) + '"><i class="' + _brCls(x.band) + '"></i>Day ' + (x.dayNo || (i + 1)) + (x.score != null ? '<em>' + x.score + '</em>' : '') + '</button>';
+  }).join('');
+  var check = d.checkIn.length ? '<div class="br-sec"><h4>Check in with</h4><ul>' + d.checkIn.map(function(x){ return '<li><b>' + _esc(x.name) + '</b>' + (x.why ? ' ' + _esc(x.why) : '') + '</li>'; }).join('') + '</ul></div>' : '';
+  var risk = d.atRisk.length ? '<div class="br-sec"><h4>Learners at risk</h4><ul>' + d.atRisk.map(function(x){
+    return '<li><b>' + _esc(x.name) + '</b>' + (isNaN(x.score) ? '' : ' <span class="br-pill">risk ' + _esc(String(x.score)) + '</span>') + (x.sofar != null ? ' <span class="br-pill">present ' + _esc(String(x.present)) + ' of ' + _esc(String(x.sofar)) + ' days</span>' : '') + (x.why ? '<br>' + _esc(x.why) : '') + '</li>';
+  }).join('') + '</ul></div>' : '';
+  var todo = d.actions.concat(d.suggest);
+  var foot = 'Session of ' + _brFmtDate(d.date) + (d.analysed ? ', analysed ' + _brFmtDate(d.analysed) + ' at ' + _evcTime(d.analysed) : '') + (d.conf ? ', ' + d.conf + ' confidence' : '')
+    + (d.conf === 'low' ? '. Early days: treat this as a first read.' : '') + (d.final ? '. Final day.' : '');
+  return '<div class="br-detail"><div class="br-tabs" role="group" aria-label="Session day">' + tabs + '</div><div class="br-grid">'
+    + _brList('What is worrying', d.concerns, 'warn') + _brList('What is going well', d.positives, 'ok')
+    + _brList('Open issues', d.open) + _brList('Learners found hard', d.hard) + check + _brList('Suggested next steps', todo) + risk
+    + '</div><div class="br-foot">' + _esc(foot) + '</div></div>';
+}
+function _brRowHtml(b){
+  var l = b.latest, cls = _brCls(l.band), open = window._brOpen[b.c.id] != null, tr = _BR_TREND[l.trend] || ['', l.trend ? l.trend.charAt(0).toUpperCase() + l.trend.slice(1) : '', ''];
+  var dl = _brDelta(b), dtxt = dl == null || dl === 0 ? '' : (dl > 0 ? '+' : '') + dl;
+  var top = l.concerns[0] || '';
+  var meta = [b.c.trainer, (window._brScope === 'all' && b.c.dm && b.c.dm.name ? 'ATM ' + b.c.dm.name : ''), (l.dayNo ? 'day ' + l.dayNo + (l.total ? ' of ' + l.total : '') : ''), (l.learners ? l.learners + ' learners' : ''), (b.c.running ? '' : 'ended ' + _brFmtDate(b.c.end))].filter(Boolean).join(', ');
+  return '<div class="br-item' + (open ? ' open' : '') + '" id="br-i-' + _esc(b.c.id) + '">'
+    + '<button type="button" class="br-row" aria-expanded="' + open + '" onclick="brToggle(\'' + _esc(b.c.id) + '\')">'
+    + '<span class="br-score ' + cls + '"><b>' + (l.score == null ? '\u2014' : _esc(String(l.score))) + '</b><em>' + _esc(l.band || 'No band') + '</em></span>'
+    + '<span class="br-main"><b title="' + _esc(b.c.course) + '">' + _esc(b.c.course) + '</b><span title="' + _esc(meta) + '">' + _esc(meta) + '</span></span>'
+    + '<span class="br-trend">' + _brSpark(b.days) + '<span class="br-tt ' + tr[2] + '">' + (tr[0] ? tr[0] + ' ' : '') + _esc(tr[1]) + (dtxt ? ' <i>' + dtxt + '</i>' : '') + '</span></span>'
+    + '<span class="br-conf ' + _esc(l.conf) + '">' + (l.conf ? _esc(l.conf.charAt(0).toUpperCase() + l.conf.slice(1)) + ' confidence' : '') + '</span>'
+    + '<span class="br-top">' + (top ? _esc(top) : '<i>No concerns recorded</i>') + '</span>'
+    + '<span class="br-chev" aria-hidden="true">\u25be</span></button>'
+    + (open ? _brDetailHtml(b, Math.min(window._brOpen[b.c.id], b.days.length - 1)) : '') + '</div>';
+}
+function _brBodyHtml(){
+  var all = _brFiltered(); window._brShown = all;
+  if(!all.length) return '<div class="sml-empty"><b>No batches match</b><span>' + (window._BR && window._BR.batches.length ? 'Try another band or time window, or clear the filters.' : 'No running or recently ended batches were found in the schedule.') + '</span><button type="button" class="cx-link" onclick="brReset()">Clear filters</button></div>';
+  var html = '', cur = null;
+  all.forEach(function(b){
+    if(window._brWhen === 'all'){
+      var g = b.c.running ? 'Running now' : 'Ended in the last ' + BR_ENDED_DAYS + ' days';
+      if(g !== cur){ cur = g; html += '<div class="sml-day"><b>' + g + '</b><span>' + all.filter(function(x){ return !!x.c.running === !!b.c.running; }).length + ' batches</span></div>'; }
+    }
+    html += _brRowHtml(b);
+  });
+  var un = window._BR.batches.filter(function(b){ return !b.latest && (window._brWhen === 'all' || (window._brWhen === 'running') === !!b.c.running); });
+  if(un.length) html += '<div class="sml-more"><b>' + un.length + ' not analysed yet:</b> ' + _esc(un.slice(0, 6).map(function(b){ return b.c.course; }).join('; ')) + (un.length > 6 ? ' and ' + (un.length - 6) + ' more' : '') + '. The analysis runs after each session day, so a batch that started today will not appear until tomorrow morning.</div>';
+  if(window._brFailed.length) html += '<div class="sml-more">' + window._brFailed.length + ' batch' + (window._brFailed.length === 1 ? '' : 'es') + ' could not be loaded (' + _esc(window._brFailed[0].msg) + '). <button type="button" class="cx-link" onclick="fetchBatchRisk(true)">Try again</button></div>';
+  return html;
+}
+function _brHeroHtml(){
+  if(!window._BR) return '';
+  var base = window._BR.batches.filter(function(b){ return b.latest && (window._brWhen === 'all' || (window._brWhen === 'running') === !!b.c.running); });
+  var counts = {}, order = [], rising = 0, flagged = 0;
+  base.forEach(function(b){ var k = String(b.latest.band || 'No band').toLowerCase(); if(!counts[k]){ counts[k] = { name:b.latest.band || 'No band', n:0 }; order.push(k); } counts[k].n++; if(_brIsRising(b)) rising++; flagged += b.latest.atRisk.length; });
+  order.sort(function(a, b){ return _brRank(b) - _brRank(a); });
+  var tot = base.length, worrying = base.filter(function(b){ return _brRank(b.latest.band) > 0; }).length;
+  var seg = order.map(function(k){ return '<span class="' + _brCls(counts[k].name) + '" style="width:' + (counts[k].n / tot * 100) + '%"></span>'; }).join('');
+  var leg = order.map(function(k){
+    var on = window._brBand === k;
+    return '<button type="button" class="sml-leg br-leg ' + _brCls(counts[k].name) + (on ? ' on' : '') + '" aria-pressed="' + on + '" onclick="brSet(\'Band\',\'' + (on ? 'all' : _esc(k)) + '\')"><i></i><span>' + _esc(counts[k].name) + '</span><b>' + counts[k].n + '</b><em>' + Math.round(counts[k].n / tot * 100) + '%</em></button>';
+  }).join('');
+  var top = base.slice().sort(function(a, b){ return (_brRank(b.latest.band) - _brRank(a.latest.band)) || ((b.latest.score || 0) - (a.latest.score || 0)); }).slice(0, 3);
+  var look = top.length ? top.map(function(b){
+    return '<button type="button" class="br-look" onclick="brFocus(\'' + _esc(b.c.id) + '\')"><span class="br-score sm ' + _brCls(b.latest.band) + '"><b>' + (b.latest.score == null ? '\u2014' : _esc(String(b.latest.score))) + '</b></span><span class="br-main"><b>' + _esc(b.c.course) + '</b><span>' + _esc(b.c.trainer) + '</span></span></button>';
+  }).join('') : '<div class="sml-bigl">Nothing to show for this window.</div>';
+  var calm = tot && !worrying ? '<div class="br-calm">Every analysed batch is in the green band.</div>' : '';
+  return '<div class="sml-hl"><div class="sml-total"><span class="sml-big">' + tot + '</span><span class="sml-bigl">batch' + (tot === 1 ? '' : 'es') + ' analysed<br>' + (window._brWhen === 'running' ? 'running now' : window._brWhen === 'ended' ? 'ended recently' : 'running or just ended') + (window._brScope === 'me' ? '' : ', ' + _esc(_brScopeLabel())) + '</span></div>'
+    + '<div class="sml-split br-split" role="img" aria-label="Batches by risk band">' + seg + '</div><div class="sml-legs">' + leg + '</div>' + calm
+    + '<div class="sml-facts"><span><b>' + worrying + '</b> above green</span><span><b>' + rising + '</b> rising</span><span><b>' + flagged + '</b> learner' + (flagged === 1 ? '' : 's') + ' flagged</span></div></div>'
+    + '<div class="sml-hr"><div class="sml-cap">Look at these first</div><div class="br-looks">' + look + '</div></div>';
+}
+function _brSegsHtml(){
+  var seg = function(kind, id, label, cls){ var on = window['_br' + kind] === id; return '<button type="button" class="sml-seg' + (on ? ' on' : '') + '" aria-pressed="' + on + '" onclick="brSet(\'' + kind + '\',\'' + id + '\')">' + label + '</button>'; };
+  return '<div class="sml-group" role="group" aria-label="Time window">' + seg('When', 'running', 'Running now') + seg('When', 'ended', 'Ended in the last ' + BR_ENDED_DAYS + ' days') + seg('When', 'all', 'Both') + '</div>'
+    + '<div class="sml-group"><button type="button" class="sml-seg' + (window._brRising ? ' on' : '') + '" aria-pressed="' + window._brRising + '" onclick="brSet(\'Rising\',' + (!window._brRising) + ')">\u2191 Rising only</button></div>';
+}
+function _brRefreshLive(){
+  var h = document.getElementById('br-hero'); if(h) h.innerHTML = _brHeroHtml();
+  var g = document.getElementById('br-segs'); if(g) g.innerHTML = _brSegsHtml();
+  var a = document.getElementById('br-atms'); if(a) a.innerHTML = _brAtmStripHtml();
+  var b = document.getElementById('br-body'); if(b) b.innerHTML = _brBodyHtml();
+}
+function _brDms(){ return (typeof ALL_DMS !== 'undefined' && ALL_DMS) ? ALL_DMS : []; }
+function _brScopeLabel(){
+  var sc = window._brScope; if(sc === 'me') return 'your team'; if(sc === 'all') return 'all ATMs';
+  var d = _brDms().filter(function(x){ return String(x.email).toLowerCase() === sc; })[0];
+  return d ? d.name + '\u2019s team' : sc;
+}
+function _brScopeSelect(){
+  var me = (typeof ME !== 'undefined' && ME) ? ME : {}, meEm = String(me.email || '').toLowerCase();
+  var opt = function(v, l){ return '<option value="' + _esc(v) + '"' + (window._brScope === v ? ' selected' : '') + '>' + _esc(l) + '</option>'; };
+  var dms = _brDms().filter(function(d){ return String(d.email).toLowerCase() !== meEm; }).slice().sort(function(a, b){ return a.name.localeCompare(b.name); });
+  return '<label class="sml-by" style="margin-left:0">ATM <select onchange="brScope(this.value)" aria-label="Whose batches to show">'
+    + opt('me', 'My team' + (me.fullName ? ' (' + me.fullName + ')' : '')) + opt('all', 'All ATMs')
+    + '<optgroup label="Another ATM">' + dms.map(function(d){ return opt(String(d.email).toLowerCase(), d.name); }).join('') + '</optgroup></select></label>';
+}
+// In "All ATMs": one chip per ATM, worst first, so it is clear whose team to open.
+function _brAtmStripHtml(){
+  if(window._brScope !== 'all' || !window._BR) return '';
+  var g = {}, order = [];
+  window._BR.batches.forEach(function(b){
+    if(!b.latest || !(window._brWhen === 'all' || (window._brWhen === 'running') === !!b.c.running)) return;
+    var k = (b.c.dm && b.c.dm.email) || '', n = (b.c.dm && b.c.dm.name) || '(no ATM)';
+    if(!g[k]){ g[k] = { key:k, name:n, n:0, above:0, rising:0 }; order.push(k); }
+    g[k].n++; if(_brRank(b.latest.band) > 0) g[k].above++; if(_brIsRising(b)) g[k].rising++;
+  });
+  if(!order.length) return '';
+  order.sort(function(a, b){ return (g[b].above - g[a].above) || (g[b].rising - g[a].rising) || (g[b].n - g[a].n) || g[a].name.localeCompare(g[b].name); });
+  return '<div class="card br-atms"><div class="sml-cap">By ATM. Choose one to open their team.</div><div class="br-atmrow">' + order.map(function(k){
+    var x = g[k], tone = x.above ? 'warn' : 'ok';
+    return '<button type="button" class="br-atm" ' + (x.key ? 'onclick="brScope(\'' + _esc(x.key) + '\')"' : 'disabled') + '><b>' + _esc(x.name) + '</b><span class="' + tone + '">' + (x.above ? x.above + ' above green' : 'All green') + '</span><em>' + x.n + (x.n === 1 ? ' batch' : ' batches') + (x.rising ? ', ' + x.rising + ' rising' : '') + '</em></button>';
+  }).join('') + '</div></div>';
+}
+function brScope(v){
+  window._brScope = v; window._BR = null; window._brError = null; window._brFailed = []; window._brBand = 'all'; window._brOpen = {};
+  rPage();
+}
+function brSetQ(v){ window._brQ = v; _brRefreshLive(); }
+function brSet(kind, v){ window['_br' + kind] = v; if(kind === 'When') window._brBand = 'all'; _brRefreshLive(); }
+function brReset(){ window._brBand = 'all'; window._brWhen = 'running'; window._brQ = ''; window._brRising = false; rPage(); }
+function _brFind(id){ return window._BR && window._BR.batches.filter(function(b){ return b.c.id === String(id); })[0]; }
+function _brRepaint(id){ var b = _brFind(id), el = document.getElementById('br-i-' + id); if(b && b.latest && el) el.outerHTML = _brRowHtml(b); }
+function brToggle(id){ var b = _brFind(id); if(!b) return; if(window._brOpen[id] != null) delete window._brOpen[id]; else window._brOpen[id] = Math.max(0, b.days.length - 1); _brRepaint(id); }
+function brDay(id, i){ window._brOpen[id] = i; _brRepaint(id); }
+function brFocus(id){
+  var b = _brFind(id); if(!b) return;
+  window._brQ = ''; window._brBand = 'all'; window._brRising = false; window._brWhen = b.c.running ? window._brWhen : 'all'; window._brOpen[id] = Math.max(0, b.days.length - 1);
+  var q = document.getElementById('br-q'); if(q) q.value = '';
+  _brRefreshLive(); var el = document.getElementById('br-i-' + id); if(el && el.scrollIntoView) el.scrollIntoView({ block:'center' });
+}
+function brExport(){
+  var rows = window._brShown || []; if(!rows.length){ showToast('Nothing to export.', 'info', 2500); return; }
+  var q = function(x){ x = String(x == null ? '' : x); if(/^[=+\-@\t\r]/.test(x)) x = "'" + x; return '"' + x.replace(/"/g, '""') + '"'; };
+  var lines = [['Assignment', 'Course', 'Trainer', 'ATM', 'Day', 'Of days', 'Learners', 'Band', 'Score', 'Change', 'Trend', 'Confidence', 'Top concern', 'Learners flagged', 'Ends'].map(q).join(',')];
+  rows.forEach(function(b){ var l = b.latest; lines.push([b.c.id, b.c.course, b.c.trainer, (b.c.dm && b.c.dm.name) || '', l.dayNo || '', l.total || '', l.learners, l.band, l.score == null ? '' : l.score, _brDelta(b) == null ? '' : _brDelta(b), l.trend, l.conf, l.concerns[0] || '', l.atRisk.length, _brIso(b.c.end)].map(q).join(',')); });
+  try {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type:'text/csv;charset=utf-8' }));
+    a.download = 'feedback-risk.csv'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  } catch(e){ showToast('Could not export: ' + (e.message || e), 'error'); }
+}
+
+function _brPanelHtml(){
+  var me = window._brScope === 'me', cand = me ? _brCandidatesMe() : null;
+  var bar = '<div class="card sml-bar" style="margin-bottom:12px">' + _brScopeSelect() + '</div>';
+  if(!window._BR){
+    if(window._brError) return bar + stateError('Could not load feedback risk', window._brError, 'fetchBatchRisk(true)');
+    if(me && !cand) return bar + stateLoading('Waiting for the schedule\u2026', 'Feedback risk is looked up for the batches that are running now, so it needs the schedule first.');
+    if(me && !cand.list.length) return bar + '<div class="card"><div class="sml-empty"><b>No running batches found</b><span>' + (cand.noEmail ? cand.noEmail + ' batch' + (cand.noEmail === 1 ? ' has' : 'es have') + ' no trainer email on file, so ' + (cand.noEmail === 1 ? 'it' : 'they') + ' cannot be looked up.' : 'Nothing in the schedule is running or ended in the last ' + BR_ENDED_DAYS + ' days.') + '</span></div></div>';
+    var p = window._brProg || { stage:'schedules', done:0, total:0 }, txt = p.stage === 'schedules' ? (p.total ? 'Reading schedules: ' + p.done + ' of ' + p.total + ' trainers' : 'Loading rosters\u2026') : 'Analysed ' + p.done + ' of ' + p.total + ' batches';
+    return bar + '<div class="card br-load"><b>Looking up feedback risk for ' + _esc(_brScopeLabel()) + '</b><span id="br-prog">' + txt + '</span><div class="br-track"><div id="br-bar" style="width:' + (p.total ? Math.round(p.done / p.total * 100) : 0) + '%"></div></div>'
+      + (window._brScope === 'all' ? '<span class="br-hint">Covering every ATM takes a little while the first time. After that it is quick, because schedules and analyses are kept for a while.</span>' : '') + '</div>';
+  }
+  var notes = [];
+  if(window._BR.noEmail) notes.push(window._BR.noEmail + (me ? ' batch' + (window._BR.noEmail === 1 ? '' : 'es') : ' trainer' + (window._BR.noEmail === 1 ? '' : 's')) + ' skipped: no email on file.');
+  if(window._BR.schedFailed) notes.push(window._BR.schedFailed + ' trainer schedule' + (window._BR.schedFailed === 1 ? '' : 's') + ' could not be read, so ' + (window._BR.schedFailed === 1 ? 'their' : 'those') + ' batches are missing.');
+  var note = notes.length ? '<div class="sml-more" style="padding:0 0 10px">' + _esc(notes.join(' ')) + ' <button type="button" class="cx-link" onclick="fetchBatchRisk(true)">Try again</button></div>' : '';
+  var so = function(id, label){ return '<option value="' + id + '"' + (window._brSort === id ? ' selected' : '') + '>' + label + '</option>'; };
+  return '<div class="card sml-hero"><div id="br-hero" class="sml-herobody">' + _brHeroHtml() + '</div>'
+    + '<div class="sml-tools"><button type="button" class="sml-tb" onclick="fetchBatchRisk(true)" title="Ask for the latest analysis of every batch">\u21bb Refresh</button><button type="button" class="sml-tb" onclick="brExport()" title="Download the batches currently listed">\u2b07 Export CSV</button><span class="sml-upd">Updated ' + _evcTime(new Date(window._BR.at)) + '</span></div></div>'
+    + '<div id="br-atms">' + _brAtmStripHtml() + '</div>'
+    + '<div class="card sml-bar">' + _brScopeSelect() + '<label class="sml-search"><span aria-hidden="true">\u2315</span><input type="text" id="br-q" placeholder="Search a course, trainer or assignment number" value="' + _esc(window._brQ) + '" oninput="brSetQ(this.value)" aria-label="Search batches"></label>'
+    + '<div id="br-segs" class="sml-segs">' + _brSegsHtml() + '</div>'
+    + '<label class="sml-by">Sort <select onchange="brSet(\'Sort\',this.value)">' + so('risk', 'Highest risk') + so('rising', 'Rising fastest') + so('ending', 'Ending soonest') + so('name', 'Course name') + '</select></label></div>'
+    + note + '<div class="card sml-list"><div id="br-body">' + _brBodyHtml() + '</div></div>';
+}
+function rBatchRisk(){
+  setTimeout(function(){ try { fetchBatchRisk(false); } catch(e){} }, 40);
+  return '<div class="pa">' + _brPanelHtml() + '</div>';
+}
+
 // ── Leads (form type 43, apikey 487) ─────────────────────────────────────────────────────────────────────────────
 // Client leads and the CSM each is assigned to. The default window is the last 90 days (the chips narrow it on screen); "All"
 // fetches without a date filter. Per the API notes: send only the filters needed (never null or ""), as YYYY-MM-DD, with the
@@ -16284,7 +17110,7 @@ function pollsOpenDm(email){
 function _rPageNow(){
   if(page!=='unallocated'&&_uatTimer){clearInterval(_uatTimer);_uatTimer=null;}
   if(page!=='launches'&&_clPanelTimer){ _clStopPanelPoll(); }
-  const r={home:rHome,batches:rBatches,trainers:rTrainers,performance:rPerformance,comms:rComms,paths:rPaths,notes:rNotes,lookup:rLookup,explorer:rExplorer,launches:rLaunches,seek:rSeek,toc:rSeek,unallocated:rUnallocated,pipeline:rPipeline,hours:rHours,signals:rTrainerSignals,flassignments:rFlAssignments,directory:rDirectory,newjoiners:rNewJoiners,polls:rPolls};
+  const r={home:rHome,batches:rBatches,trainers:rTrainers,performance:rPerformance,comms:rComms,paths:rPaths,notes:rNotes,lookup:rLookup,explorer:rExplorer,launches:rLaunches,seek:rSeek,toc:rSeek,unallocated:rUnallocated,pipeline:rPipeline,hours:rHours,signals:rTrainerSignals,flassignments:rFlAssignments,directory:rDirectory,newjoiners:rNewJoiners,skilllog:rSkillLog,batchrisk:rBatchRisk,polls:rPolls};
   // Preserve vertical scroll position across re-renders. Resets are opt-in via navigate()
   // or when explicitly requested. Rationale: most rPage() calls are in-panel state updates
   // (filter toggles, selection changes, expansion) where scroll-to-top is jarring.
@@ -17343,6 +18169,8 @@ window.RP_DEFAULTS = {
     evalCalls:                   '471',
     leads:                       '487',
     newJoiners:                  '473',
+    skillMarkLog:                '507',
+    batchRisk:                   '506',
     courseLaunches:              '351',
     kgtAnnouncements:            '427',
     allFeedback:                 '244',
@@ -17716,6 +18544,14 @@ function openLiveConfig() {
           body:'{}',
           response:'CId, CourseName, DCType, DurationDays, DurationHours, LaunchedBy, CourseStatus, InhouseMarkedBy, in_house_mark_date, InhouseTrainer',
           note:'The only source of DC type, defined duration and launched-by anywhere in the dashboard. Also the COURSE-KEYED source of in-house markings (InhouseTrainer / InhouseMarkedBy / in_house_mark_date), which is why Course Explorer reads markings from here rather than from apikey=289 \u2014 289 is keyed per employee and needs the roster fan-out to reach. Returns the full catalogue with no filter \u2014 thousands of rows, well past the localStorage quota \u2014 so it is fetched once per session on first open of Course Explorer and each row is stripped to nine fields before being kept. One course spans several rows when it has several in-house markings. Employment status arrives as an "(Inactive)" suffix inside the name strings rather than as a flag.' })
+      + apiRow({ key:'batchRisk', num:'506', label:'Feedback risk (per batch)', panels:['Feedback Risk'],
+          body:'{ TrainerEmail, TrainerId, AssignmentId, FromDate, ToDate }  (dates YYYY-MM-DD)',
+          response:'AssignmentId, CourseName, TrainerName, SessionDate, DayNo, TotalDays, Learners, RiskScore, RiskBand, Confidence, Trend, ConcernsJson, PositivesJson, TrainerNoteJson, TrainerActionsJson, LearnersAtRiskJson, AnalysedOn',
+          note:'One row per analysed session day, produced overnight by the backend, so the risk score and band are the backend\'s own and are shown as given. One call per running batch (a few at a time, cached for an hour). The panel asks for the course start, or up to 30 days back, to today. TrainerEmail is sent as name%40domain, as in the working curl; plain @ is tried once if that comes back empty. The *Json fields are JSON strings and may be null.' })
+      + apiRow({ key:'skillMarkLog', num:'507', label:'Skill mark log', panels:['Skill Mark Log'],
+          body:'{}',
+          response:'trainername, cname, Grade, Remark, Addedon, IsActive, PerfomedBY, Type',
+          note:'Recent skill marks, newest first, no filter. The feed has no source field: a row counts as marked from the Freelancer Engagement panel when Type says so or Remark starts with "from API FL"; anything else is shown as marked elsewhere. IsActive=false rows are superseded or withdrawn marks, kept as history. Addedon is a local wall-clock time with no zone.' })
       + apiRow({ key:'newJoiners', num:'473', label:'New joiners', panels:['New Joiners'],
 body:'{ FromDate, ToDate }  (DD-Mon-YYYY)',
 response:'TrainerName, OfficialEmail, DateOfJoining, CVUrl, BaseLocation',
@@ -21526,8 +22362,8 @@ function _renderManagePanelsList(){
 var _SB_GROUPS = [
   ['Overview',   ['home','trainers','performance','notes']],
   ['Scheduling', ['batches','lookup','unallocated','launches']],
-  ['Skills',     ['explorer','paths','comms']],
-  ['Delivery',   ['hours','pipeline','signals']],
+  ['Skills',     ['explorer','paths','comms','skilllog']],
+  ['Delivery',   ['hours','pipeline','signals','batchrisk']],
   ['People',     ['flassignments','directory','newjoiners','polls']]
 ];
 function _sbItemHtml(p){
@@ -21873,6 +22709,14 @@ const _PANEL_REFRESH_CONFIG = {
     steps: [],            // handled as a special case — apikey 190 has its own fetcher
     derive: false
   },
+  batchrisk: {
+    label: 'Refresh Feedback Risk',
+    steps: [], derive: false      // handled as a special case: apikey 506 has its own fetcher
+  },
+  skilllog: {
+    label: 'Refresh Skill Mark Log',
+    steps: [], derive: false      // handled as a special case: apikey 507 has its own fetcher
+  },
   newjoiners: {
     label: 'Refresh New Joiners',
     steps: [], derive: false      // handled as a special case: apikey 473 has its own fetcher
@@ -22028,6 +22872,24 @@ async function syncPanel(){
     if(btn){ btn.classList.remove('running'); btn.disabled = false; }
     return;
   }
+
+  // Feedback Risk: apikey 506 has its own fetcher.
+    if(currentPage === 'batchrisk'){
+      try { _panelBannerShow('Refreshing feedback risk\u2026'); await fetchBatchRisk(true); showToast('Feedback risk refreshed.', 'success'); }
+      catch(e){ showToast('Could not refresh: ' + (e.message||e), 'error'); }
+      _panelBannerHide();
+      if(btn){ btn.classList.remove('running'); btn.disabled = false; }
+      return;
+    }
+
+  // Skill Mark Log: apikey 507 has its own fetcher.
+    if(currentPage === 'skilllog'){
+      try { _panelBannerShow('Refreshing the skill mark log\u2026'); await fetchSkillMarkLog(true); showToast('Skill mark log refreshed.', 'success'); }
+      catch(e){ showToast('Could not refresh: ' + (e.message||e), 'error'); }
+      _panelBannerHide();
+      if(btn){ btn.classList.remove('running'); btn.disabled = false; }
+      return;
+    }
 
   // New Joiners: apikey 473 has its own fetcher.
     if(currentPage === 'newjoiners'){
