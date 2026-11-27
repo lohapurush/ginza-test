@@ -7221,6 +7221,11 @@ function rBatches(){
       return tr.name.split(' ')[0].toLowerCase() === t.name.split(' ')[0].toLowerCase();
     });
     const isDMRow = !!(tc && tc.isDM);
+    // exact full-name match only (tc above is a first-name match and can be the wrong person)
+    const _tipTrainerEmail = (function(){
+      var x = D.trainers.find(function(q){ return q.name.toLowerCase() === t.name.toLowerCase(); });
+      return x ? getTrainerEmailForAPI(x) : '';
+    })();
     // ── Build merge plan: group consecutive days with identical status into single wide pills ──
     // Today always breaks the span so its accent border stays intact.
     const plan = WD.map(function(date){
@@ -7381,7 +7386,8 @@ function rBatches(){
           start:b.startTime||'', end:b.endTime||'', hours:b.hours||'',
           scId:b.scId||'', assignId:b.assignId||'', location:loc, locStatus:locStatus,
           specifiedTrainer:b.specifiedTrainer||'', dnc:b.dnc||'',
-          flightMatches:flightMatches, role:b.trainerRole||''
+          flightMatches:flightMatches, role:b.trainerRole||'',
+          trainer:t.name||'', trainerEmail:_tipTrainerEmail
         });
       });
       var tipAttr = blocks.length>0 ? ' data-tip="'+encodeURIComponent(JSON.stringify(tipData))+'"' : '';
@@ -12801,7 +12807,7 @@ function _hrsOpenOverlay(empId, trainerName, periodKey, periodLabel){
         var rowId='hrs-ov-row-'+ri;
         var fbId='hrs-ov-fb-'+ri;
         var revealBtn=aid
-          ? '<button onclick="_hrsToggleOverlayFeedback(\''+fbId+'\',\''+String(aid).replace(/'/g,"\\'")+'\',\''+trainerEmail.replace(/'/g,"\\'")+'\')" style="font-size:10px;padding:1px 6px;border-radius:var(--r-md);border:1px solid var(--card-b);background:var(--surf);color:var(--t3);cursor:pointer;font-family:inherit;margin-left:6px">Feedback ▾</button>'
+          ? '<button onclick="_hrsToggleOverlayFeedback(\''+fbId+'\',\''+String(aid).replace(/'/g,"\\'")+'\',\''+trainerEmail.replace(/'/g,"\\'")+'\',\''+String(trainerName||'').replace(/'/g,"\\'")+'\')" style="font-size:10px;padding:1px 6px;border-radius:var(--r-md);border:1px solid var(--card-b);background:var(--surf);color:var(--t3);cursor:pointer;font-family:inherit;margin-left:6px">Feedback ▾</button>'
           : '';
         return '<div id="'+rowId+'" class="hrs-overlay-row" style="flex-direction:column;align-items:stretch">'
           +'<div style="display:flex;align-items:center;width:100%">'
@@ -12874,7 +12880,7 @@ function _hrsOpenOverlay(empId, trainerName, periodKey, periodLabel){
 // Resolves SCID via API 173 first (same resolver Assignment Lookup uses) so the
 // feedback fetch is scoped identically — this is what makes Lookup fast and was
 // missing here, causing the API to fall back to broader/unscoped results.
-function _hrsToggleOverlayFeedback(fbId, assignId, trainerEmail){
+function _hrsToggleOverlayFeedback(fbId, assignId, trainerEmail, trainerName){
   var el = document.getElementById(fbId);
   if(!el) return;
   if(el.style.display === 'block'){ el.style.display = 'none'; return; }
@@ -12902,10 +12908,27 @@ function _hrsToggleOverlayFeedback(fbId, assignId, trainerEmail){
     el.dataset.loaded = '1';
   }
 
-  // Resolve SCID via shared cache (likely already resolved from the prefetch
-  // that fired when the overlay opened), then fetch feedback scoped by both IDs.
-  resolveScid(assignId, function(scid){
-    fetchAssignmentFeedback244(trainerEmail, assignId, scid, renderMatches);
+  // API 524 store first — no SCID resolve and no per-assignment call when the
+  // assignment is inside the loaded window. Anything older falls through to 244.
+  var _ref = { email: trainerEmail, name: trainerName };
+  fb524Ensure(function(){
+    var got = fb524Get(assignId, null, _ref);
+    if(got.subs.length){
+      el.innerHTML = fb524Html(got.subs, got.mismatch);
+      el.dataset.loaded = '1';
+      return;
+    }
+    // Resolve SCID via shared cache (likely already resolved from the prefetch
+    // that fired when the overlay opened), then fetch feedback scoped by both IDs.
+    resolveScid(assignId, function(scid){
+      var got2 = scid ? fb524Get(null, scid, _ref) : { subs: [] };
+      if(got2.subs.length){
+        el.innerHTML = fb524Html(got2.subs, got2.mismatch);
+        el.dataset.loaded = '1';
+        return;
+      }
+      fetchAssignmentFeedback244(trainerEmail, assignId, scid, renderMatches);
+    });
   });
 }
 function _hrsCloseOverlay(){
@@ -16176,46 +16199,59 @@ function rLookup(){
 
   +'</div>';
 
-  // ── Feedback for this assignment (API 244) ──
+  // ── Feedback for this assignment ──
+  // API 524 store first (matched on AssignmentId / SCID — no trainer-email guess needed to find it),
+  // API 244 only when the assignment is older than the loaded window or the 524 feed failed.
   var lookupFbHtml = '';
-  if(d.trainer && d.assignId){
-    var lkEmail = _guessTrainerEmail(d.trainer);
-    var lkAkey = String(d.assignId||'')+'|'+String(d.scId||'');
-    var lkEntry = window._FB244_ASSIGN_CACHE[lkAkey];
-    if(!lkEntry || (!lkEntry.loaded && !lkEntry.loading)){
-      fetchAssignmentFeedback244(lkEmail, d.assignId, d.scId, function(){ if(page==='lookup') rPage(); });
-      lkEntry = window._FB244_ASSIGN_CACHE[lkAkey];
+  if(d.assignId || d.scId){
+    var lkEmail = d.trainer ? _guessTrainerEmail(d.trainer) : '';
+    var lkRef   = { name: d.trainer || '', email: lkEmail };
+    var lkS     = window._FB524;
+    if(lkS.state === 'idle' || (lkS.state === 'error' && Date.now() - lkS.errAt >= 60000)){
+      fb524Ensure(function(){ if(page==='lookup') rPage(); });
     }
-    var lkLoading = lkEntry && lkEntry.loading;
-    var lkLoaded  = lkEntry && lkEntry.loaded;
-    var lkMatches = (lkEntry && lkEntry.rows) || [];
+    var lkGot      = fb524Get(d.assignId, d.scId, lkRef);
+    var lkFromFeed = lkGot.subs.length > 0;
+    var lkLoading  = false, lkLoaded = false, lkLegacy = [];
+    if(lkFromFeed){
+      lkLoaded = true;
+    } else if(lkS.state === 'idle' || lkS.state === 'loading'){
+      lkLoading = true;
+    } else {
+      // outside the window (or feed unavailable) → per-assignment history feed
+      var lkAkey = String(d.assignId||'')+'|'+String(d.scId||'');
+      var lkEntry = window._FB244_ASSIGN_CACHE[lkAkey];
+      if(!lkEntry || (!lkEntry.loaded && !lkEntry.loading)){
+        fetchAssignmentFeedback244(lkEmail, d.assignId, d.scId, function(){ if(page==='lookup') rPage(); });
+        lkEntry = window._FB244_ASSIGN_CACHE[lkAkey];
+      }
+      lkLoading = !!(lkEntry && lkEntry.loading);
+      lkLoaded  = !!(lkEntry && lkEntry.loaded);
+      lkLegacy  = (lkEntry && lkEntry.rows) || [];
+    }
+    var lkSum   = lkFromFeed ? fb524Summary(lkGot.subs) : null;
+    var lkCount = lkFromFeed ? lkGot.subs.length : lkLegacy.length;
 
-    lookupFbHtml = '<details class="card" style="padding:0;border-left:4px solid var(--acc);margin-bottom:12px" '+(lkMatches.length?'open':'')+'>'
+    lookupFbHtml = '<details class="card" style="padding:0;border-left:4px solid var(--acc);margin-bottom:12px" '+(lkCount?'open':'')+'>'
       +'<summary style="padding:12px 16px;list-style:none;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none">'
         +'<span style="font-size:12px">&#9654;</span>'
         +'<span class="stl" style="margin:0;font-size:12px">Trainer Feedback</span>'
         +(lkLoading?'<span style="font-size:10px;color:var(--t3);margin-left:6px">Loading…</span>'
-          :lkLoaded?'<span style="font-size:10px;padding:2px 8px;border-radius:var(--r-pill);background:var(--acc-l);color:var(--acc-t);border:1px solid var(--acc-b);font-weight:600;margin-left:6px">'+lkMatches.length+'</span>':'')
+          :lkLoaded?'<span style="font-size:10px;padding:2px 8px;border-radius:var(--r-pill);background:var(--acc-l);color:var(--acc-t);border:1px solid var(--acc-b);font-weight:600;margin-left:6px">'+lkCount+'</span>':'')
+        +(lkSum && lkSum.avg != null ? '<span style="font-size:11px;font-weight:700;color:var(--pill-warn-fg);margin-left:4px">\u2605 '+lkSum.avg.toFixed(1)+'</span>' : '')
       +'</summary>'
       +'<div style="padding:0 16px 14px;border-top:1px solid var(--div)">';
 
     if(lkLoading){
-      lookupFbHtml += '<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Fetching feedback for '+_esc2(d.trainer)+'…</div>';
-    } else if(lkLoaded && !lkMatches.length){
-      lookupFbHtml += '<div style="padding:12px;text-align:center;color:var(--t3);font-size:12px;font-style:italic">No feedback found for this assignment (#'+_esc2(String(d.assignId))+').</div>';
+      lookupFbHtml += '<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Fetching feedback…</div>';
+    } else if(lkFromFeed){
+      lookupFbHtml += fb524Html(lkGot.subs, lkGot.mismatch)
+        + '<div style="margin-top:6px;font-size:10px;color:var(--t3)">Source: feedback feed, last '+(_fb524Window().months)+' months.</div>';
+    } else if(lkLoaded && !lkLegacy.length){
+      lookupFbHtml += '<div style="padding:12px;text-align:center;color:var(--t3);font-size:12px;font-style:italic">No feedback found for this assignment'+(d.assignId?' (#'+_esc2(String(d.assignId))+')':'')+'.</div>';
     } else if(lkLoaded){
-      lkMatches.forEach(function(f, idx){
-        var safeRating2 = (f.rating!=null && !isNaN(f.rating)) ? Math.max(0, Math.min(5, Math.round(Number(f.rating)))) : null;
-        var stars = safeRating2 != null ? '★'.repeat(safeRating2) + '☆'.repeat(5-safeRating2) : '';
-        var dateStr = f.dateParsed && !isNaN(f.dateParsed) ? f.dateParsed.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-        lookupFbHtml += '<div style="padding:10px 0;'+(idx>0?'border-top:1px solid var(--div);':'')+'font-size:12px">'
-          +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">'
-            +(stars?'<span style="font-size:11px;color:var(--pill-warn-fg);letter-spacing:1px">'+stars+'</span>':'')
-            +'<span style="font-size:11px;color:var(--t3)">'+_esc2(dateStr)+'</span>'
-          +'</div>'
-          +(f.text?'<div style="font-size:12px;color:var(--t1);line-height:1.55">'+_esc2(f.text)+'</div>':'<div style="font-size:12px;color:var(--t3);font-style:italic">No comment provided.</div>')
-        +'</div>';
-      });
+      lookupFbHtml += fb524LegacyHtml(lkLegacy)
+        + '<div style="margin-top:6px;font-size:10px;color:var(--t3)">Source: trainer history feed (older than the last '+(_fb524Window().months)+' months).</div>';
     }
     lookupFbHtml += '</div></details>';
   }
@@ -18174,6 +18210,7 @@ window.RP_DEFAULTS = {
     courseLaunches:              '351',
     kgtAnnouncements:            '427',
     allFeedback:                 '244',
+    feedbackFeed:                '524',
     trainerHours:                '234',
     employeeDesigHistory:        '198',
     employeeMgrHistory:          '196',
@@ -18480,6 +18517,10 @@ function openLiveConfig() {
           body:'{ TrainerEmail: "trainer@koenig-solutions.com" }',
           response:'Full multi-year feedback history per trainer \u2014 no server-side date filter',
           note:'Was in use but undocumented until this audit. Returns everything ever recorded, so results are trimmed client-side to the date you took over the trainer; that cutoff is what keeps Hub, the Hours overlay and Assignment Tracker responsive.' })
+      + apiRow({ key:'feedbackFeed', num:'524', label:'Feedback Feed \u2014 Org-wide by Date Range', panels:['Gantt','Hours','Assignment Tracker'],
+          body:'{ FromDate: "DD-Mon-YYYY", ToDate: "DD-Mon-YYYY" }',
+          response:'One row per learner per question: AssignmentId, SCID, trainer, CCE, MCQAnswer (1\u20135 rating), TextAnswer',
+          note:'Loaded once on first use for the last 3 months (RUNTIME_PARAMS.feedbackMonths) and kept in memory; falls back to one call per month if the range is rejected. Gantt, Hours and Assignment Tracker read this first and use API 244 only for anything older.' })
     )
 
     // ── SCORECARD ──
@@ -22150,9 +22191,11 @@ function showGanttTip(td, evt) {
         }
       }
     }
+    out += gtFbBlockHtml(obj);
     return '<div style="'+(ei>0?'padding-top:10px;margin-top:10px;border-top:1px solid var(--div)':'')+'">' + out + '</div>';
   }).join('');
   tip.innerHTML=html;
+  _gtFbHydrate(tip);
   tip.style.display='block';
   tip.style.pointerEvents = 'auto';
   tip.style.position = tip.style.position || 'fixed';
@@ -31783,6 +31826,441 @@ function _rPipelineOem(){
         +'</details>';
     })() : '')
     +'</div>';
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// ── FEEDBACK STORE (API 524) ──
+// One org-wide, date-range feed → normalised once → indexed by AssignmentId and
+// SCID. Gantt tooltip, Hours overlay and Assignment Lookup all read from here,
+// so they no longer guess a trainer email or make a call per assignment.
+//
+// Window: today minus N months (default 3, RUNTIME_PARAMS.feedbackMonths), by
+// FEEDBACK date. One call; if the server rejects the range it falls back to
+// one call per calendar month. In-memory only (nothing is written to storage).
+//
+// Feed shape: long format, one row per learner per question. Quirks handled:
+//   · duplicate rows a few ms apart            → de-duplicated
+//   · SCStatus "Cancel" rows                   → dropped
+//   · CCE proxy entries (blank/test learner)   → kept, tagged proxy, not averaged
+//   · several trainers on one assignment       → each submission keeps its own trainer
+//   · IsNegativeFeedback is unreliable         → risk is computed locally
+// ════════════════════════════════════════════════════════════════════════════
+window._FB524 = window._FB524 || {
+  state: 'idle',            // idle | loading | ready | error
+  from: null, to: null,     // Date window covered
+  subs: [], byAssign: {}, byScid: {},
+  rowCount: 0, mode: '', error: null, errAt: 0, fetchedAt: 0, waiters: []
+};
+
+var _FB524_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function _fb524Fmt(d){
+  return ('0'+d.getDate()).slice(-2)+'-'+_FB524_MONTHS[d.getMonth()]+'-'+d.getFullYear();
+}
+function _fb524Esc(s){
+  if(typeof _esc === 'function') return _esc(s);
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function _fb524Window(){
+  var rp = (typeof window !== 'undefined' && window.RUNTIME_PARAMS) || {};
+  var m = parseInt(rp.feedbackMonths, 10);
+  if(!(m > 0 && m <= 24)) m = 3;
+  var to = new Date(); to.setHours(0,0,0,0);
+  var from = new Date(to.getFullYear(), to.getMonth() - m, to.getDate());
+  return { from: from, to: to, months: m };
+}
+
+// ── Normaliser (pure — no DOM, no network) ──────────────────────────────────
+function _fb524S(v){ return v == null ? '' : String(v).trim(); }
+function _fb524T(v){ var t = new Date(v).getTime(); return isNaN(t) ? 0 : t; }
+
+var _FB524_PROXY_NAME  = /\btest\b|\bmtm\b|collected through|client sent|sent feedback|feedback/i;
+var _FB524_PROXY_EMAIL = /^test|[._-]test@|@test\.|@example\./i;
+function _fb524IsProxy(r){
+  var n = _fb524S(r.StudentName), e = _fb524S(r.StudentEmail);
+  if(!n) return true;
+  if(_FB524_PROXY_NAME.test(n)) return true;
+  if(e && _FB524_PROXY_EMAIL.test(e)) return true;
+  return false;
+}
+
+function _fb524Kind(q){
+  q = _fb524S(q).toLowerCase();
+  if(q.indexOf('overall rating') >= 0) return 'rating';
+  if(q.indexOf('deliver') >= 0) return 'deliver';
+  if(/\blab\b|course ?book/.test(q)) return 'lab';
+  if(/training cent(?:re|er)/.test(q)) return 'centre';
+  if(q.indexOf('improvement') >= 0 || q.indexOf('advice') >= 0) return 'suggest';
+  if(/pre-?requisite/.test(q)) return 'prereq';
+  if(q.indexOf('revision') >= 0) return 'revision';
+  if(q.indexOf('personali') >= 0) return 'personal';
+  return 'other';
+}
+var _FB524_NEUTRAL = /^(?:no|nil|nill|none|n\/?a|na|nope|nothing|not applicable|no issues?|no problems?|no complaints?|no suggestions?|all good|good|fine|ok|okay|great|excellent|-+|\.+)[.!\s]*$/i;
+function _fb524HasContent(t){ t = _fb524S(t); return !!t && !_FB524_NEUTRAL.test(t); }
+
+var _FB524_NEG = /\b(?:unsatisf|disappoint|poor|bad|worst|waste|rude|unprofessional|confus|boring)|not (?:good|satisf|happy|clear|helpful|prepared)/i;
+function _fb524NegText(t){
+  t = _fb524S(t).replace(/\bnot (?:bad|poor)\b/ig, '');
+  return _fb524S(t) ? _FB524_NEG.test(t) : false;
+}
+
+function fb524Normalise(rows){
+  var out = { subs: [], byAssign: {}, byScid: {}, rowCount: 0 };
+  if(!Array.isArray(rows)) return out;
+  out.rowCount = rows.length;
+
+  // 1. drop cancelled student cards
+  var live = rows.filter(function(r){ return r && !/cancel/i.test(_fb524S(r.SCStatus)); });
+
+  // 2. bucket by assignment + SC + learner + trainer
+  var buckets = {};
+  live.forEach(function(r){
+    var learner = _fb524S(r.StudentId) || _fb524S(r.StudentEmail).toLowerCase() || _fb524S(r.StudentName).toLowerCase();
+    var trainer = _fb524S(r.TrainerEmail).toLowerCase() || _fb524S(r.TrainerName).toLowerCase();
+    var k = _fb524S(r.AssignmentId) + '|' + _fb524S(r.SCID) + '|' + learner + '|' + trainer;
+    (buckets[k] = buckets[k] || { identified: !!_fb524S(r.StudentId), rows: [] }).rows.push(r);
+  });
+
+  // 3. within a bucket: identified learner → one submission; anonymous → split on >120 s gaps
+  Object.keys(buckets).forEach(function(k){
+    var b = buckets[k];
+    b.rows.sort(function(x, y){ return _fb524T(x.FeedBackDate) - _fb524T(y.FeedBackDate); });
+    var clusters = [];
+    b.rows.forEach(function(r){
+      var t = _fb524T(r.FeedBackDate), last = clusters[clusters.length - 1];
+      if(!last || (!b.identified && t - last.t > 120000)) clusters.push(last = { t: t, rows: [] });
+      last.t = t; last.rows.push(r);
+    });
+    clusters.forEach(function(c){ var s = _fb524BuildSub(c.rows); if(s) out.subs.push(s); });
+  });
+
+  out.subs.sort(function(a, b){ return b.date - a.date; });
+  out.subs.forEach(function(s){
+    if(s.assignId) (out.byAssign[s.assignId] = out.byAssign[s.assignId] || []).push(s);
+    if(s.scid)     (out.byScid[s.scid]       = out.byScid[s.scid]       || []).push(s);
+  });
+  return out;
+}
+
+function _fb524BuildSub(rows){
+  // latest row per question wins (collapses the ms-apart duplicates)
+  var perQ = {};
+  rows.forEach(function(r){
+    var q = _fb524S(r.Question);
+    if(!perQ[q] || _fb524T(r.FeedBackDate) >= _fb524T(perQ[q].FeedBackDate)) perQ[q] = r;
+  });
+  var first = rows[rows.length - 1];
+  var s = {
+    assignId: _fb524S(first.AssignmentId), scid: _fb524S(first.SCID),
+    studentId: _fb524S(first.StudentId), studentName: _fb524S(first.StudentName), studentEmail: _fb524S(first.StudentEmail),
+    trainerName: _fb524S(first.TrainerName), trainerEmail: _fb524S(first.TrainerEmail).toLowerCase(),
+    cce: _fb524S(first.CCEName), scStatus: _fb524S(first.SCStatus),
+    date: 0, rating: null, deliver: '', suggest: [], lab: '', centre: '', extras: [],
+    proxy: _fb524IsProxy(first), neg: false
+  };
+  rows.forEach(function(r){ var t = _fb524T(r.FeedBackDate); if(t > s.date) s.date = t; });
+
+  Object.keys(perQ).forEach(function(q){
+    var r = perQ[q], kind = _fb524Kind(q), txt = _fb524S(r.TextAnswer), mcq = r.MCQAnswer;
+    if(kind === 'rating'){
+      var n = Number(mcq != null && mcq !== '' ? mcq : txt);
+      if(isFinite(n) && n >= 1 && n <= 5) s.rating = n;
+    } else if(kind === 'deliver'){
+      if(txt) s.deliver = txt;
+    } else if(kind === 'lab'){
+      if(_fb524HasContent(txt)) s.lab = txt; else if(typeof mcq === 'string' && /^yes/i.test(mcq)) s.lab = 'Yes';
+    } else if(kind === 'centre'){
+      if(_fb524HasContent(txt)) s.centre = txt; else if(typeof mcq === 'string' && /^yes/i.test(mcq)) s.centre = 'Yes';
+    } else if(kind === 'suggest'){
+      if(_fb524HasContent(txt)) s.suggest.push(txt);
+    } else {
+      var a = txt || (mcq != null ? String(mcq) : '');
+      if(_fb524HasContent(a)) s.extras.push({ q: q, a: a, kind: kind });
+    }
+  });
+
+  // nothing usable at all → skip
+  if(s.rating == null && !s.deliver && !s.suggest.length && !s.lab && !s.centre && !s.extras.length) return null;
+
+  // local risk: rating ≤ 3; if unrated, fall back to negative wording
+  s.neg = s.rating != null ? s.rating <= 3 : (_fb524NegText(s.deliver) || s.suggest.some(_fb524NegText));
+  return s;
+}
+
+// ── Queries ─────────────────────────────────────────────────────────────────
+function _fb524Tokens(n){ return _fb524S(n).toLowerCase().replace(/[^a-z\s]/g, ' ').split(/\s+/).filter(function(x){ return x.length > 1; }); }
+function _fb524SameTrainer(sub, ref){
+  if(!ref) return false;
+  var e = _fb524S(ref.email).toLowerCase();
+  if(e && sub.trainerEmail && e === sub.trainerEmail) return true;
+  var a = _fb524Tokens(sub.trainerName), b = _fb524Tokens(ref.name);
+  if(!a.length || !b.length) return false;
+  var common = a.filter(function(t){ return b.indexOf(t) >= 0; }).length;
+  return common >= Math.min(2, a.length, b.length);
+}
+
+// → { subs, mismatch }  (mismatch = a trainer was given but none of the submissions are theirs)
+function fb524Get(assignId, scid, trainerRef){
+  var S = window._FB524, subs = [];
+  if(S.state !== 'ready') return { subs: [], mismatch: false };
+  if(assignId && S.byAssign[String(assignId)]) subs = S.byAssign[String(assignId)];
+  else if(scid && S.byScid[String(scid)]) subs = S.byScid[String(scid)];
+  if(!subs.length) return { subs: [], mismatch: false };
+  if(trainerRef && (trainerRef.email || trainerRef.name)){
+    var mine = subs.filter(function(s){ return _fb524SameTrainer(s, trainerRef); });
+    if(mine.length) return { subs: mine, mismatch: false };
+    // a guessed email/name can legitimately differ from the feed's → still show, but say whose it is
+    return { subs: subs, mismatch: true };
+  }
+  return { subs: subs, mismatch: false };
+}
+
+function fb524Summary(subs){
+  var learners = subs.filter(function(s){ return !s.proxy; });
+  var rated = learners.filter(function(s){ return s.rating != null; });
+  var sum = rated.reduce(function(a, s){ return a + s.rating; }, 0);
+  var last = subs.reduce(function(m, s){ return s.date > m ? s.date : m; }, 0);
+  return {
+    n: subs.length, learnerN: learners.length, proxyN: subs.length - learners.length,
+    ratedN: rated.length, avg: rated.length ? sum / rated.length : null,
+    low: rated.filter(function(s){ return s.rating <= 3; }).length,
+    negN: subs.filter(function(s){ return s.neg; }).length,
+    labN: subs.filter(function(s){ return !!s.lab; }).length,
+    centreN: subs.filter(function(s){ return !!s.centre; }).length,
+    last: last,
+    trainers: subs.reduce(function(a, s){ var n = s.trainerName || s.trainerEmail; if(n && a.indexOf(n) < 0) a.push(n); return a; }, [])
+  };
+}
+
+function fb524Covers(iso){
+  var S = window._FB524, t = _fb524T(iso);
+  return !!(S.from && S.to && t && t >= S.from.getTime() && t <= S.to.getTime() + 86399000);
+}
+
+// ── Loading ─────────────────────────────────────────────────────────────────
+function _fb524Call(fromD, toD){
+  var url = 'https://api.koenig-solutions.com/api/Kites/Operator/common?apikey='
+          + encodeURIComponent(_apiKey('feedbackFeed', '524')) + '&' + _authQS();
+  return fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ FromDate: _fb524Fmt(fromD), ToDate: _fb524Fmt(toD) })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(json){
+    if(!json || json.statuscode !== 200) throw new Error('statuscode ' + (json && json.statuscode));
+    var c = json.content;
+    if(typeof c === 'string') c = c.trim() ? JSON.parse(c) : [];
+    if(!Array.isArray(c)) throw new Error('unexpected content');
+    return c;
+  });
+}
+function _fb524MonthChunks(from, to){
+  var out = [], s = new Date(from);
+  while(s <= to){
+    var e = new Date(s.getFullYear(), s.getMonth() + 1, 0);
+    if(e > to) e = new Date(to);
+    out.push([new Date(s), e]);
+    s = new Date(s.getFullYear(), s.getMonth() + 1, 1);
+  }
+  return out;
+}
+
+function _fb524Finish(S, err){
+  var w = S.waiters; S.waiters = [];
+  w.forEach(function(fn){ try{ fn(S); }catch(e){ console.warn('[FB524] waiter', e); } });
+}
+
+function fb524Ensure(cb, force){
+  var S = window._FB524;
+  if(S.state === 'ready' && !force){ if(cb) cb(S); return; }
+  if(S.state === 'error' && !force && Date.now() - S.errAt < 60000){ if(cb) cb(S); return; }
+  if(cb) S.waiters.push(cb);
+  if(S.state === 'loading') return;
+
+  var win = _fb524Window();
+  S.state = 'loading'; S.error = null;
+
+  _fb524Call(win.from, win.to)
+    .then(function(rows){ S.mode = 'range'; return rows; })
+    .catch(function(e1){
+      console.warn('[FB524] full range rejected (' + e1.message + ') — retrying month by month');
+      var chunks = _fb524MonthChunks(win.from, win.to), all = [];
+      return chunks.reduce(function(p, c){
+        return p.then(function(){ return _fb524Call(c[0], c[1]).then(function(r){ all = all.concat(r); }); });
+      }, Promise.resolve()).then(function(){ S.mode = 'monthly'; return all; });
+    })
+    .then(function(rows){
+      var n = fb524Normalise(rows);
+      S.subs = n.subs; S.byAssign = n.byAssign; S.byScid = n.byScid; S.rowCount = n.rowCount;
+      S.from = win.from; S.to = win.to; S.fetchedAt = Date.now(); S.state = 'ready';
+      _fb524Finish(S);
+    })
+    .catch(function(e){
+      S.state = 'error'; S.error = e.message || 'Fetch error'; S.errAt = Date.now();
+      console.warn('[FB524] load failed:', S.error);
+      _fb524Finish(S);
+    });
+}
+function fb524Reload(cb){ fb524Ensure(cb, true); }
+
+// ── Rendering (shared by Gantt tooltip, Hours overlay, Lookup) ──────────────
+function _fb524Stars(r){
+  if(r == null) return '';
+  var n = Math.max(0, Math.min(5, Math.round(r)));
+  return '\u2605'.repeat(n) + '\u2606'.repeat(5 - n);
+}
+function _fb524Date(ms){
+  if(!ms) return '';
+  return new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function fb524AvgLabel(sum){
+  if(!sum || sum.avg == null) return sum && sum.n ? 'Feedback (' + sum.n + ')' : 'No feedback';
+  return 'Feedback \u2605' + sum.avg.toFixed(1) + ' (' + sum.ratedN + ')';
+}
+
+function fb524SummaryHtml(sum, mismatch){
+  if(!sum || !sum.n) return '';
+  var chip = function(txt, bad){
+    return '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-pill);border:1px solid '
+      + (bad ? 'var(--pill-bad-bd);background:var(--pill-bad-bg);color:var(--pill-bad-fg)' : 'var(--card-b);background:var(--surf);color:var(--t2)') + '">' + txt + '</span>';
+  };
+  var bits = [];
+  if(sum.avg != null) bits.push('<span style="font-size:15px;font-weight:800;color:var(--t1)">' + sum.avg.toFixed(1) + '</span>'
+                              + '<span style="font-size:11px;color:var(--pill-warn-fg);letter-spacing:1px">' + _fb524Stars(sum.avg) + '</span>');
+  bits.push(chip(sum.learnerN + ' learner' + (sum.learnerN === 1 ? '' : 's')));
+  if(sum.low)     bits.push(chip(sum.low + ' rated \u22643', true));
+  if(sum.labN)    bits.push(chip(sum.labN + ' lab/book issue' + (sum.labN === 1 ? '' : 's'), true));
+  if(sum.centreN) bits.push(chip(sum.centreN + ' centre note' + (sum.centreN === 1 ? '' : 's')));
+  if(sum.proxyN)  bits.push(chip(sum.proxyN + ' via CCE (not averaged)'));
+  var note = mismatch && sum.trainers.length
+    ? '<div style="font-size:10px;color:var(--t3);margin-top:4px">Feedback on record is for ' + _fb524Esc(sum.trainers.join(', ')) + '.</div>' : '';
+  return '<div style="padding:10px 0 4px"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">' + bits.join('') + '</div>' + note + '</div>';
+}
+
+function _fb524SubHtml(s, idx, showTrainer){
+  var who = s.proxy
+    ? '<span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:var(--r-pill);background:var(--surf);border:1px solid var(--card-b);color:var(--t3)">Via CCE</span>'
+    : '<span style="font-size:11px;font-weight:600;color:var(--t1)">' + _fb524Esc(s.studentName) + '</span>';
+  var line = function(lbl, txt, warn){
+    return '<div style="margin-top:4px;font-size:12px;line-height:1.5;color:var(--t1)"><span style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:'
+      + (warn ? 'var(--pill-warn-fg)' : 'var(--t3)') + '">' + lbl + '</span> ' + _fb524Esc(txt) + '</div>';
+  };
+  var body = '';
+  if(s.deliver)  body += '<div style="font-size:12px;color:var(--t1);line-height:1.55;margin-top:4px">' + _fb524Esc(s.deliver) + '</div>';
+  s.suggest.forEach(function(t){ body += line('Suggestion', t); });
+  if(s.lab)      body += line('Lab / Course Book', s.lab, true);
+  if(s.centre)   body += line('Training Centre', s.centre, true);
+  s.extras.forEach(function(x){ body += line(x.kind === 'prereq' ? 'Pre-requisite' : x.kind === 'revision' ? 'Revision class' : x.kind === 'personal' ? 'Personalisation' : 'Other', x.a); });
+  if(!body) body = '<div style="font-size:12px;color:var(--t3);font-style:italic;margin-top:4px">No comment provided.</div>';
+  return '<div style="padding:9px 0;' + (idx > 0 ? 'border-top:1px solid var(--div);' : '') + 'font-size:12px">'
+    + '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">'
+      + (s.rating != null ? '<span style="font-size:11px;color:' + (s.neg ? 'var(--pill-bad-fg)' : 'var(--pill-warn-fg)') + ';letter-spacing:1px">' + _fb524Stars(s.rating) + '</span>' : '')
+      + who
+      + '<span style="font-size:10px;color:var(--t3)">' + _fb524Esc(_fb524Date(s.date)) + '</span>'
+      + (showTrainer && s.trainerName ? '<span style="font-size:10px;color:var(--t3)">\u00b7 ' + _fb524Esc(s.trainerName) + '</span>' : '')
+    + '</div>' + body + '</div>';
+}
+
+// summary strip + one block per submission
+function fb524Html(subs, mismatch){
+  if(!subs || !subs.length) return '';
+  var sum = fb524Summary(subs);
+  var multi = sum.trainers.length > 1;
+  return fb524SummaryHtml(sum, mismatch) + subs.map(function(s, i){ return _fb524SubHtml(s, i, multi); }).join('');
+}
+
+// Renders legacy API-244 records ({rating,text,dateParsed}) for the older-than-window fallback
+function fb524LegacyHtml(records){
+  if(!records || !records.length) return '';
+  return records.map(function(f, i){
+    return '<div style="padding:8px 0;' + (i > 0 ? 'border-top:1px solid var(--div);' : '') + 'font-size:12px">'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + (f.rating != null && !isNaN(f.rating) ? '<span style="font-size:11px;color:var(--pill-warn-fg);letter-spacing:1px">' + _fb524Stars(Number(f.rating)) + '</span>' : '')
+      + '<span style="font-size:10px;color:var(--t3)">' + _fb524Esc(f.dateParsed && !isNaN(f.dateParsed) ? _fb524Date(f.dateParsed.getTime()) : '') + '</span></div>'
+      + (f.text ? '<div style="margin-top:3px;color:var(--t1);line-height:1.5">' + _fb524Esc(f.text) + '</div>' : '<div style="margin-top:3px;color:var(--t3);font-style:italic">No comment.</div>')
+      + '</div>';
+  }).join('');
+}
+
+// ── Gantt tooltip hooks ─────────────────────────────────────────────────────
+// A block is eligible once it has ended (or today is its last day): SC / DVT with an assignment id.
+function _gtFbEligible(obj){
+  if(!obj || !(obj.code === 'SC' || obj.code === 'DVT') || !obj.assignId) return false;
+  var end = obj.eDate || obj.sDate;
+  if(!end) return true;
+  var t = _fb524T(end); if(!t) return true;
+  var today = new Date(); today.setHours(23, 59, 59, 999);
+  return t <= today.getTime();
+}
+function gtFbBlockHtml(obj){
+  if(!_gtFbEligible(obj)) return '';
+  return '<div class="gt-fb" data-aid="' + _fb524Esc(obj.assignId) + '" data-scid="' + _fb524Esc(obj.scId || '') + '"'
+    + ' data-tn="' + _fb524Esc(obj.trainer || '') + '" data-te="' + _fb524Esc(obj.trainerEmail || '') + '"'
+    + ' data-ed="' + _fb524Esc(obj.eDate || obj.sDate || '') + '" style="margin-top:8px">'
+    + '<button type="button" class="gt-fb-btn" onclick="_gtFbToggle(this)" style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--r-md);border:1px solid var(--card-b);background:var(--surf);color:var(--t2);cursor:pointer;font-family:inherit">Feedback</button>'
+    + '<div class="gt-fb-body" style="display:none;margin-top:6px;max-height:240px;overflow:auto;padding:2px 8px;background:var(--surf);border-radius:var(--r-md)"></div>'
+    + '</div>';
+}
+function _gtFbRef(box){ return { name: box.getAttribute('data-tn') || '', email: box.getAttribute('data-te') || '' }; }
+
+function _gtFbHydrate(tip){
+  if(!tip) return;
+  var boxes = tip.querySelectorAll('.gt-fb');
+  if(!boxes.length) return;
+  fb524Ensure(function(S){
+    boxes.forEach(function(box){
+      if(!document.body.contains(box)) return;
+      var btn = box.querySelector('.gt-fb-btn');
+      if(S.state !== 'ready'){ btn.textContent = 'Feedback'; btn.title = 'Feedback feed unavailable — click to try the older feed'; return; }
+      var got = fb524Get(box.getAttribute('data-aid'), box.getAttribute('data-scid'), _gtFbRef(box));
+      if(got.subs.length){
+        var sum = fb524Summary(got.subs);
+        btn.textContent = fb524AvgLabel(sum);
+        if(sum.negN){ btn.style.borderColor = 'var(--pill-bad-bd)'; btn.style.color = 'var(--pill-bad-fg)'; }      // a rating of 3 or below
+        else if(sum.labN){ btn.style.borderColor = 'var(--pill-warn-bd)'; btn.style.color = 'var(--pill-warn-fg)'; } // lab / book problem only
+      } else if(fb524Covers(box.getAttribute('data-ed'))){
+        btn.textContent = 'No feedback yet';
+        btn.style.color = 'var(--t3)';
+      } else {
+        btn.textContent = 'Feedback';
+        btn.title = 'Older than the last ' + (_fb524Window().months) + ' months — click to fetch from the history feed';
+      }
+    });
+  });
+}
+
+function _gtFbReposition(){
+  var tip = document.getElementById('gantt-tip'), td = tip && tip._lastObj;
+  if(!tip || !td || !td.getBoundingClientRect) return;
+  var r = td.getBoundingClientRect(), tw = tip.offsetWidth || 260, th = tip.offsetHeight || 140;
+  var x = r.left + r.width / 2 - tw / 2, y = r.bottom + 4;
+  if(y + th > window.innerHeight - 8) y = r.top - th - 4;
+  if(x < 8) x = 8;
+  if(x + tw > window.innerWidth - 8) x = window.innerWidth - tw - 10;
+  if(y < 8) y = Math.max(8, window.innerHeight - th - 8);
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+
+function _gtFbToggle(btn){
+  var box = btn.closest('.gt-fb'), body = box.querySelector('.gt-fb-body');
+  if(body.style.display === 'block'){ body.style.display = 'none'; _gtFbReposition(); return; }
+  body.style.display = 'block';
+  var aid = box.getAttribute('data-aid'), scid = box.getAttribute('data-scid'), ref = _gtFbRef(box);
+  body.innerHTML = '<div style="font-size:11px;color:var(--t3);padding:6px 0">Loading feedback\u2026</div>';
+  _gtFbReposition();
+  fb524Ensure(function(S){
+    var got = fb524Get(aid, scid, ref);
+    if(got.subs.length){ body.innerHTML = fb524Html(got.subs, got.mismatch); _gtFbReposition(); return; }
+    // nothing in the window → fall back to the per-trainer history feed (API 244)
+    var email = ref.email || (typeof _guessTrainerEmail === 'function' ? _guessTrainerEmail(ref.name) : '');
+    if(typeof fetchAssignmentFeedback244 !== 'function'){ body.innerHTML = '<div style="font-size:11px;color:var(--t3);padding:6px 0;font-style:italic">No feedback found.</div>'; return; }
+    fetchAssignmentFeedback244(email, aid, scid, function(recs){
+      body.innerHTML = (recs && recs.length) ? fb524LegacyHtml(recs)
+        : '<div style="font-size:11px;color:var(--t3);padding:6px 0;font-style:italic">No feedback found for #' + _fb524Esc(aid) + '.</div>';
+      _gtFbReposition();
+    });
+  });
 }
 
 </script>
